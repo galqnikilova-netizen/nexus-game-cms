@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -24,12 +25,17 @@ class User extends Authenticatable
         'password',
         'role',
         'locale',
+        'role_id',
+        'status',
     ];
 
     public function isAdmin(): bool
     {
         return in_array($this->role, ['owner', 'admin'], true);
     }
+
+    public function nexusRole(): BelongsTo { return $this->belongsTo(Role::class, 'role_id'); }
+    public function canNexus(string $permission): bool { return $this->role === 'owner' || $this->nexusRole?->allows($permission) === true; }
 
     /**
      * The attributes that should be hidden for serialization.

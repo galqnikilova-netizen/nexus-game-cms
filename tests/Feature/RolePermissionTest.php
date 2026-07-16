@@ -1,0 +1,4 @@
+<?php
+namespace Tests\Feature;
+use App\Models\Role; use App\Models\User; use Illuminate\Foundation\Testing\RefreshDatabase; use Tests\TestCase;
+class RolePermissionTest extends TestCase { use RefreshDatabase; public function test_owner_can_create_role_and_update_member():void { $owner=User::factory()->create(['role'=>'owner']); $this->actingAs($owner)->post(route('admin.roles.store'),['name'=>'Moderator','permissions'=>['admin.access','servers.manage']])->assertRedirect(route('admin.roles.index')); $role=Role::where('name','Moderator')->firstOrFail(); $member=User::factory()->create(); $this->actingAs($owner)->put(route('admin.users.update',$member),['name'=>$member->name,'role_id'=>$role->id,'status'=>'active','locale'=>'bg'])->assertRedirect(); $this->assertSame($role->id,$member->fresh()->role_id); $this->assertDatabaseHas('activity_logs',['event'=>'user.updated','subject_id'=>$member->id]); } }

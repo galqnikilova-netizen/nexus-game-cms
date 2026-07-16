@@ -24,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('access-admin', fn (User $user): bool => $user->isAdmin());
+        Gate::before(fn (User $user, string $ability) => $user->role === 'owner' ? true : null);
+        Gate::define('access-admin', fn (User $user): bool => $user->isAdmin() || $user->canNexus('admin.access'));
         RateLimiter::for('login', fn (Request $request) => Limit::perMinute(5)->by(strtolower((string) $request->input('email')).'|'.$request->ip()));
     }
 }
