@@ -14,6 +14,7 @@
 @import './classic-pages.css';
 @import './classic-polish.css';
 @import './portal-2012.css';
+@import './portal-bans.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
