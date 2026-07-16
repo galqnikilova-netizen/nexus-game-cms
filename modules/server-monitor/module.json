@@ -1,0 +1,1 @@
+{"slug":"server-monitor","name":"Server Monitor","version":"0.1.0","author":"NEXUS Core Team","description":"Live Source and GoldSrc query monitoring powered by xPaw.","requires":{"nexus":">=0.1.0","php":">=8.2"},"permissions":["servers.view","servers.manage","servers.query"]}

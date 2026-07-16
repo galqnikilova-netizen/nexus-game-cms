@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GameServerController as AdminGameServerController;
+use App\Http\Controllers\Admin\ModuleController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstallController;
@@ -20,4 +22,8 @@ Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth')->
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function (): void {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('servers', AdminGameServerController::class)->except(['show']);
+    Route::get('modules', [ModuleController::class, 'index'])->name('modules.index');
+    Route::patch('modules/{module}/toggle', [ModuleController::class, 'toggle'])->name('modules.toggle');
+    Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 });
