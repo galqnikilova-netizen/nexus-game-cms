@@ -1,0 +1,1 @@
+{"slug":"csbans","name":"CSBans Integration","version":"0.1.0","author":"NEXUS Core Team","description":"Read-only AMXBans/FreshBans integration with public ban list and statistics.","requires":{"nexus":">=0.1.0","php":">=8.2"},"permissions":["bans.view","bans.manage"]}

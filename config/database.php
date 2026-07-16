@@ -64,6 +64,8 @@ return [
             ], fn ($value) => $value !== null) : [],
         ],
 
+        'csbans' => ['driver'=>'mysql','url'=>env('CSBANS_DB_URL'),'host'=>env('CSBANS_DB_HOST','127.0.0.1'),'port'=>env('CSBANS_DB_PORT','3306'),'database'=>env('CSBANS_DB_DATABASE','forge'),'username'=>env('CSBANS_DB_USERNAME','forge'),'password'=>env('CSBANS_DB_PASSWORD',''),'unix_socket'=>env('CSBANS_DB_SOCKET',''),'charset'=>env('CSBANS_DB_CHARSET','utf8'),'collation'=>env('CSBANS_DB_COLLATION','utf8_general_ci'),'prefix'=>'','prefix_indexes'=>true,'strict'=>false,'engine'=>null],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
