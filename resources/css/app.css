@@ -12,6 +12,7 @@
 @import './theme-runtime.css';
 @import './classic-redesign.css';
 @import './classic-pages.css';
+@import './classic-polish.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
