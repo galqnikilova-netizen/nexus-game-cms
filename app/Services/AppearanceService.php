@@ -13,8 +13,9 @@ class AppearanceService
     {
         if ($this->values !== null) return $this->values;
         try { $stored = Setting::query()->pluck('value', 'key')->all(); } catch (Throwable) { $stored = []; }
-        $accent = (string) ($stored['accent.color'] ?? '#91ff2d');
-        if (! preg_match('/^#[0-9a-fA-F]{6}$/', $accent)) $accent = '#91ff2d';
+        $accent = (string) ($stored['accent.color'] ?? '#d58b32');
+        if (! preg_match('/^#[0-9a-fA-F]{6}$/', $accent)) $accent = '#d58b32';
+        if (in_array(strtolower($accent), ['#91ff2d', '#8cff35', '#9aff3e', '#7cff00'], true)) $accent = '#d58b32';
         $defaultLocale = (string) ($stored['default.locale'] ?? 'bg');
         return $this->values = [
             'site_name' => (string) ($stored['site.name'] ?? 'NEXUS'),

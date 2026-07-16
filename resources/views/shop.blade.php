@@ -1,1 +1,47 @@
-<x-layouts.app title="Магазин · NEXUS"><section class="portal-subhead"><div class="portal-shell"><div class="portal-breadcrumb"><a href="{{ route('home') }}">HOME</a><span>/</span><b>STORE</b></div><small>COMMUNITY SERVICES</small><h1>VIP & SERVICES</h1><p>Подкрепи мрежата и отключи допълнителни community услуги.</p></div></section><div class="portal-shell portal-store-layout"><nav class="store-categories"><b>STORE CATEGORIES</b><a class="active" href="#">ALL PRODUCTS <span>02</span></a><a href="#">VIP SERVICES <span>01</span></a><a href="#">COMMUNITY <span>01</span></a><div><small>YOUR BALANCE</small><strong>@auth{{ number_format((float)auth()->user()->balance,2) }}@else0.00@endauth EUR</strong></div></nav><main><header class="portal-heading"><div><small>PRODUCT CATALOG</small><h2>AVAILABLE SERVICES</h2></div><b>2 PRODUCTS</b></header><div class="portal-products"><article><header><span>01</span><i>POPULAR</i></header><div class="product-emblem">VIP</div><small>CS2 SERVER SERVICE</small><h2>PRIME VIP</h2><p>Reserved slot, premium профилен badge и приоритетна community поддръжка.</p><ul><li>Reserved server slot</li><li>VIP profile status</li><li>Priority support</li></ul><footer><b>9.99 <small>EUR / MONTH</small></b><button disabled>COMING SOON</button></footer></article><article><header><span>02</span><i>SUPPORTER</i></header><div class="product-emblem">NX</div><small>COMMUNITY UPGRADE</small><h2>NETWORK BOOST</h2><p>Подкрепи развитието на NEXUS и получи отличителен supporter статус.</p><ul><li>Supporter role</li><li>Profile accent</li><li>Community recognition</li></ul><footer><b>4.99 <small>EUR</small></b><button disabled>COMING SOON</button></footer></article></div><div class="payment-notice"><span>!</span><div><b>PAYMENT SYSTEM IN DEVELOPMENT</b><p>Каталогът е готов. Checkout и реалните платежни доставчици са следващият backend слой.</p></div></div></main></div></x-layouts.app>
+<x-layouts.app title="Магазин · NEXUS">
+    <section class="portal-subhead">
+        <div class="portal-shell">
+            <div class="portal-breadcrumb"><a href="{{ route('home') }}">HOME</a><span>/</span><b>STORE</b></div>
+            <small>COMMUNITY SERVICES</small>
+            <h1>VIP &amp; SERVICES</h1>
+            <p>Подкрепи мрежата и отключи допълнителни community услуги.</p>
+        </div>
+    </section>
+
+    <div class="portal-shell portal-page-grid">
+        <x-portal-sidebar />
+        <main class="portal-page-main">
+        <nav class="store-categories store-categories-horizontal">
+            <b>STORE CATEGORIES</b>
+            <a class="active" href="#">ALL PRODUCTS <span>02</span></a>
+            <a href="#">VIP SERVICES <span>01</span></a>
+            <a href="#">COMMUNITY <span>01</span></a>
+            <div>
+                <small>YOUR BALANCE</small>
+                <strong>{{ number_format((float) (auth()->user()?->balance ?? 0), 2) }} EUR</strong>
+            </div>
+        </nav>
+
+            <header class="portal-heading"><div><small>PRODUCT CATALOG</small><h2>AVAILABLE SERVICES</h2></div><b>2 PRODUCTS</b></header>
+            <div class="portal-products">
+                <article>
+                    <header><span>01</span><i>POPULAR</i></header>
+                    <div class="product-emblem">VIP</div>
+                    <small>CS2 SERVER SERVICE</small><h2>PRIME VIP</h2>
+                    <p>Reserved slot, premium профилен badge и приоритетна community поддръжка.</p>
+                    <ul><li>Reserved server slot</li><li>VIP profile status</li><li>Priority support</li></ul>
+                    <footer><b>9.99 <small>EUR / MONTH</small></b><button disabled>COMING SOON</button></footer>
+                </article>
+                <article>
+                    <header><span>02</span><i>SUPPORTER</i></header>
+                    <div class="product-emblem">NX</div>
+                    <small>COMMUNITY UPGRADE</small><h2>NETWORK BOOST</h2>
+                    <p>Подкрепи развитието на NEXUS и получи отличителен supporter статус.</p>
+                    <ul><li>Supporter role</li><li>Profile accent</li><li>Community recognition</li></ul>
+                    <footer><b>4.99 <small>EUR</small></b><button disabled>COMING SOON</button></footer>
+                </article>
+            </div>
+            <div class="payment-notice"><span>!</span><div><b>PAYMENT SYSTEM IN DEVELOPMENT</b><p>Каталогът е готов. Checkout и реалните платежни доставчици са следващият backend слой.</p></div></div>
+        </main>
+    </div>
+</x-layouts.app>
