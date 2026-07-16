@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/locale/{locale}', function (string $locale) {
     abort_unless(in_array($locale, ['bg', 'en'], true), 404);
     session(['locale' => $locale]);
+    if (auth()->check()) auth()->user()->update(['locale' => $locale]);
     return back();
 })->name('locale.switch');
 

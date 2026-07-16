@@ -8,6 +8,8 @@
 @import './public-ui.css';
 @import './server-ui.css';
 @import './mobile-menu.css';
+@import './appearance.css';
+@import './theme-runtime.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
