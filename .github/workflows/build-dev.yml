@@ -1,0 +1,43 @@
+name: Build DEV package
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo_mysql, curl, openssl, zip, fileinfo
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install production PHP dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+      - name: Compile production assets
+        run: npm install && npm run build
+      - name: Prepare release tree
+        run: |
+          mkdir -p release/nexus-game-cms
+          rsync -a --exclude=.git --exclude=.github --exclude=node_modules --exclude=tests --exclude=.env ./ release/nexus-game-cms/
+          cp .env.example release/nexus-game-cms/.env.example
+          printf 'DEV_BUILD=%s\nCOMMIT=%s\n' "$(date -u +%Y%m%d-%H%M)" "$GITHUB_SHA" > release/nexus-game-cms/BUILD_INFO
+          cd release && zip -qr ../NEXUS_GAME_CMS_DEV_FULL.zip nexus-game-cms
+          cd .. && sha256sum NEXUS_GAME_CMS_DEV_FULL.zip > NEXUS_GAME_CMS_DEV_FULL.zip.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NEXUS_GAME_CMS_DEV_PACKAGE
+          path: |
+            NEXUS_GAME_CMS_DEV_FULL.zip
+            NEXUS_GAME_CMS_DEV_FULL.zip.sha256
+          retention-days: 30
+
