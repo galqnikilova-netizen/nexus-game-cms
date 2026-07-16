@@ -10,6 +10,8 @@
 @import './mobile-menu.css';
 @import './appearance.css';
 @import './theme-runtime.css';
+@import './classic-redesign.css';
+@import './classic-pages.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
