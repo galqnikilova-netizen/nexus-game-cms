@@ -17,7 +17,7 @@
             <header class="portal-heading"><div><small>LIVE STATUS</small><h2>GAME SERVERS</h2></div><a href="{{ route('servers.index') }}">VIEW ALL SERVERS</a></header>
             <section class="portal-home-servers">
                 @forelse($servers as $server)
-                    <a class="portal-server" href="{{ route('servers.index') }}"><span>{{ strtoupper(substr($server->game, 0, 2)) }}</span><div><b>{{ $server->name }}</b><small>{{ $server->current_map ?? $server->host.':'.$server->port }}</small><em><i style="width:{{ $server->players_max ? min(100, ($server->players_online / $server->players_max) * 100) : 0 }}%"></i></em></div><strong>{{ $server->players_online }}<small>/{{ $server->players_max }}</small></strong></a>
+                    <a class="portal-server home-map-server" href="{{ route('servers.index') }}"><span style="--map-art:url('{{ $server->mapArtwork() }}')"><i>{{ strtoupper(substr($server->game, 0, 2)) }}</i></span><div><b>{{ $server->name }}</b><small>{{ $server->current_map ?? $server->host.':'.$server->port }}</small><em><i style="width:{{ $server->players_max ? min(100, ($server->players_online / $server->players_max) * 100) : 0 }}%"></i></em></div><strong>{{ $server->players_online }}<small>/{{ $server->players_max }}</small></strong></a>
                 @empty
                     <div class="portal-server-empty">No servers configured yet.</div>
                 @endforelse
