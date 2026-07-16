@@ -5,6 +5,8 @@
 @import './users.css';
 @import './bans.css';
 @import './profile.css';
+@import './public-ui.css';
+@import './server-ui.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
