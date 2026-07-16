@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->appendToGroup('web', SetNexusLocale::class);
-        $middleware->append(EnsureNexusIsInstalled::class);
+        $middleware->appendToGroup('web', EnsureNexusIsInstalled::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

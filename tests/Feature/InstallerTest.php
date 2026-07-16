@@ -12,4 +12,3 @@ class InstallerTest extends TestCase
         $this->assertTrue(app('router')->has('install.store'));
     }
 }
-
