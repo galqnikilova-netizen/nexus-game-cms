@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('current_map')->nullable();
             $table->unsignedInteger('latency_ms')->nullable();
             $table->timestamp('last_query_at')->nullable();
+            $table->string('last_error', 500)->nullable();
             $table->boolean('is_visible')->default(true)->index();
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
@@ -34,4 +35,3 @@ return new class extends Migration {
         Schema::dropIfExists('game_servers');
     }
 };
-
