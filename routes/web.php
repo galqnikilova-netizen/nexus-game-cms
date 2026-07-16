@@ -10,6 +10,12 @@ use App\Http\Controllers\InstallController;
 use App\Http\Controllers\ServerController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/locale/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, ['bg', 'en'], true), 404);
+    session(['locale' => $locale]);
+    return back();
+})->name('locale.switch');
+
 Route::get('/install', [InstallController::class, 'create'])->name('install');
 Route::post('/install', [InstallController::class, 'store'])->middleware('throttle:5,1')->name('install.store');
 
