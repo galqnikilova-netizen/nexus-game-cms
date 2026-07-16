@@ -15,8 +15,8 @@ class PublicSiteTest extends TestCase
         GameServer::create(['name'=>'NEXUS Competitive','slug'=>'nexus-competitive','game'=>'cs2','host'=>'127.0.0.1','port'=>27015,'is_visible'=>true]);
         $this->get('/')->assertOk()->assertSee('NEXUS Competitive');
         $this->get('/servers')->assertOk()->assertSee('NEXUS Competitive');
-        $this->get('/community')->assertOk()->assertSee('Играчите правят');
-        $this->get('/shop')->assertOk()->assertSee('Prime VIP');
+        $this->get('/community')->assertOk()->assertSee('OUR COMMUNITY')->assertSee('portal-community-layout');
+        $this->get('/shop')->assertOk()->assertSee('PRIME VIP')->assertSee('portal-store-layout');
         $this->get('/')->assertSee(route('community.index'))->assertSee(route('shop.index'))->assertSee(route('bans.index'));
         $this->get('/')->assertSee('mobile-menu')->assertSee('portal-nav')->assertSee('portal-columns');
     }

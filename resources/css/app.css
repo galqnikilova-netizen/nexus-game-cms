@@ -15,6 +15,10 @@
 @import './classic-polish.css';
 @import './portal-2012.css';
 @import './portal-bans.css';
+@import './portal-pages-v2.css';
+@import './portal-mobile-nav.css';
+@import './portal-auth-profile.css';
+@import './portal-servers.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
