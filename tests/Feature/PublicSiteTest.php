@@ -18,6 +18,6 @@ class PublicSiteTest extends TestCase
         $this->get('/community')->assertOk()->assertSee('Играчите правят');
         $this->get('/shop')->assertOk()->assertSee('Prime VIP');
         $this->get('/')->assertSee(route('community.index'))->assertSee(route('shop.index'))->assertSee(route('bans.index'));
-        $this->get('/')->assertSee('mobile-menu')->assertSee('classic-nav');
+        $this->get('/')->assertSee('mobile-menu')->assertSee('portal-nav')->assertSee('portal-columns');
     }
 }
