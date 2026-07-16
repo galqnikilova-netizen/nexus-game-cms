@@ -27,6 +27,10 @@ class User extends Authenticatable
         'locale',
         'role_id',
         'status',
+        'steam_id',
+        'avatar_url',
+        'profile_url',
+        'last_login_at',
     ];
 
     public function isAdmin(): bool
@@ -57,6 +61,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime',
         ];
     }
 }

@@ -4,6 +4,7 @@
 @import './localization.css';
 @import './users.css';
 @import './bans.css';
+@import './profile.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
