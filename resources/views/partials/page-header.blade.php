@@ -1,0 +1,1 @@
+<section class="page-header"><div><span class="eyebrow">{{ $eyebrow }}</span><h1>{{ $title }}</h1><p>{{ $description }}</p></div><div class="page-header-actions">{{ $slot ?? '' }}</div></section>
