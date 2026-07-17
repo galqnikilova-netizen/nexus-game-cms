@@ -5,7 +5,9 @@ const savedSidebar = localStorage.getItem('sidebarOpened');
 if (sidebar && savedSidebar === 'true' && window.innerWidth > 900) sidebar.classList.add('opened');
 document.querySelector('[data-sidebar-toggle]')?.addEventListener('click', () => {
     sidebar?.classList.toggle('opened');
-    localStorage.setItem('sidebarOpened', String(sidebar?.classList.contains('opened')));
+    const open = Boolean(sidebar?.classList.contains('opened'));
+    document.documentElement.classList.toggle('sidebar-is-open', open);
+    localStorage.setItem('sidebarOpened', String(open));
 });
 
 const headerMenu = document.querySelector('.nav_header_menu');
