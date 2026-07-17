@@ -10,7 +10,7 @@ class CsBansTest extends TestCase
     public function test_disabled_integration_renders_safe_setup_state(): void
     {
         config(['csbans.enabled' => false]);
-        $this->get('/bans')->assertOk()->assertSee('CSBans връзката не е конфигурирана')->assertSee('portal-ban-page');
+        $this->get('/bans')->assertOk()->assertSee('CSBans не е конфигуриран')->assertSee('SECURITY DATABASE');
     }
 
     public function test_ban_status_matches_csbans_conventions(): void

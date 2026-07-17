@@ -1,17 +1,1 @@
-<x-layouts.app title="Общност · NEXUS">
-    <section class="portal-subhead"><div class="portal-shell"><div class="portal-breadcrumb"><a href="{{ route('home') }}">HOME</a><span>/</span><b>COMMUNITY</b></div><small>MEMBER NETWORK</small><h1>OUR COMMUNITY</h1><p>Играчите, които изграждат NEXUS мрежата.</p></div></section>
-    <div class="portal-shell portal-page-grid">
-        <x-portal-sidebar />
-        <main class="portal-page-main">
-            <header class="portal-heading"><div><small>MEMBER DIRECTORY</small><h2>LATEST MEMBERS</h2></div><b>{{ number_format($memberCount) }} REGISTERED</b></header>
-            <div class="community-summary-strip"><span><small>REGISTERED</small><b>{{ number_format($memberCount) }}</b></span><span><small>STEAM IDENTITY</small><b>ACTIVE</b></span><span><small>TRUST SYSTEM</small><b>ONLINE</b></span></div>
-            <div class="portal-member-list">
-                @forelse($members as $member)
-                    <a href="{{ route('profile.show', $member) }}"><div class="member-number">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</div>@if($member->avatar_url)<img src="{{ $member->avatar_url }}" alt="">@else<span class="member-letter">{{ mb_substr($member->name, 0, 1) }}</span>@endif<div><b>{{ $member->name }}</b><small>{{ $member->steam_id ? 'STEAM VERIFIED PLAYER' : 'NEXUS MEMBER' }}</small></div><time>JOINED {{ $member->created_at->format('d.m.Y') }}</time><i>→</i></a>
-                @empty
-                    <div class="portal-empty"><b>THE COMMUNITY IS WAITING FOR YOU</b><p>Свържи Steam профила си и бъди първият играч.</p><a href="{{ route('auth.steam') }}">CONNECT STEAM →</a></div>
-                @endforelse
-            </div>
-        </main>
-    </div>
-</x-layouts.app>
+<x-layouts.app title="Общност · NEXUS"><x-page-header eyebrow="Member network" title="Our community" description="Играчите, които изграждат NEXUS мрежата."/><div class="nx-shell grid gap-6 py-8 lg:grid-cols-[230px_1fr]"><x-public-sidebar/><main><div class="flex items-end justify-between border-b border-white/8 pb-4"><div><span class="nx-kicker">MEMBER DIRECTORY</span><h2 class="nx-title mt-2">Latest members</h2></div><b class="text-xs text-slate-500">{{ number_format($memberCount) }} REGISTERED</b></div><div class="nx-card mt-5 overflow-hidden">@forelse($members as $member)<a href="{{ route('profile.show',$member) }}" class="grid min-h-20 grid-cols-[48px_1fr_auto] items-center gap-4 border-b border-white/7 px-4 last:border-0 hover:bg-white/4">@if($member->avatar_url)<img class="h-11 w-11 rounded-xl object-cover" src="{{ $member->avatar_url }}" alt="">@else<span class="grid h-11 w-11 place-items-center rounded-xl bg-white/7 font-black text-[var(--accent)]">{{ mb_substr($member->name,0,1) }}</span>@endif<div><b class="text-sm">{{ $member->name }}</b><small class="block text-[8px] uppercase text-slate-600">{{ $member->steam_id?'Steam verified':'Nexus member' }}</small></div><time class="hidden text-[8px] text-slate-600 sm:block">{{ $member->created_at->format('d.m.Y') }}</time></a>@empty<p class="p-12 text-center text-slate-500">No members yet.</p>@endforelse</div></main></div></x-layouts.app>

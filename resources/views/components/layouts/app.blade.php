@@ -1,2 +1,1 @@
-@include('layouts.app', ['slot' => $slot, 'title' => $title ?? null])
-
+@include('layouts.app', ['slot'=>$slot, 'title'=>$title ?? null])

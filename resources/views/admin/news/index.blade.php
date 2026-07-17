@@ -1,18 +1,1 @@
-<x-layouts.admin title="Новини · NEXUS" heading="Новини и публикации">
-    <section class="admin-panel">
-        <div class="panel-head"><div><small>CONTENT MANAGER</small><h2>Всички новини</h2></div><a class="btn btn-primary" href="{{ route('admin.news.create') }}">+ Нова новина</a></div>
-        <div class="news-admin-list">
-            @forelse($posts as $post)
-                <article>
-                    @if($post->imageUrl())<img src="{{ $post->imageUrl() }}" alt="">@else<span>NEWS</span>@endif
-                    <div><small>{{ strtoupper($post->category) }} · {{ $post->is_published ? 'PUBLISHED' : 'DRAFT' }}</small><b>{{ $post->title }}</b><p>{{ $post->excerpt }}</p></div>
-                    <time>{{ ($post->published_at ?? $post->created_at)->format('d.m.Y H:i') }}</time>
-                    <div class="news-admin-actions"><a href="{{ route('admin.news.edit',$post) }}">Редакция</a><form method="POST" action="{{ route('admin.news.destroy',$post) }}" onsubmit="return confirm('Да изтрия ли новината?')">@csrf @method('DELETE')<button>Изтрий</button></form></div>
-                </article>
-            @empty
-                <div class="empty-state"><h3>Все още няма новини</h3><p>Създай първата публикация.</p></div>
-            @endforelse
-        </div>
-        {{ $posts->links() }}
-    </section>
-</x-layouts.admin>
+<x-layouts.admin title="News · NEXUS" heading="News manager"><section class="nx-card overflow-hidden"><header class="flex items-center justify-between border-b border-white/8 p-5"><div><span class="nx-kicker">CONTENT</span><h2 class="mt-2 text-xl font-black">All publications</h2></div><a class="nx-button" href="{{ route('admin.news.create') }}">+ New article</a></header><div>@forelse($posts as $post)<article class="grid gap-4 border-b border-white/7 p-4 last:border-0 sm:grid-cols-[90px_1fr_auto] sm:items-center">@if($post->imageUrl())<img class="h-16 w-24 rounded-xl object-cover" src="{{ $post->imageUrl() }}" alt="">@else<span class="grid h-16 w-24 place-items-center rounded-xl bg-white/5 text-xs text-slate-600">NEWS</span>@endif<div><small class="nx-kicker">{{ $post->category }} · {{ $post->is_published?'PUBLISHED':'DRAFT' }}</small><b class="mt-1 block text-sm">{{ $post->title }}</b><p class="mt-1 truncate text-[10px] text-slate-500">{{ $post->excerpt }}</p></div><div class="flex gap-2"><a class="nx-button-muted" href="{{ route('admin.news.edit',$post) }}">Edit</a><form method="POST" action="{{ route('admin.news.destroy',$post) }}">@csrf @method('DELETE')<button class="nx-button-muted text-rose-300">Delete</button></form></div></article>@empty<p class="p-12 text-center text-slate-500">No publications.</p>@endforelse</div></section></x-layouts.admin>

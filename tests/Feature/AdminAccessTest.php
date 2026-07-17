@@ -14,7 +14,6 @@ class AdminAccessTest extends TestCase
     {
         $this->get('/admin')->assertRedirect('/login');
         $owner = User::factory()->create(['role'=>'owner']);
-        $this->actingAs($owner)->get('/admin')->assertOk()->assertSee('Добре дошъл обратно');
+        $this->actingAs($owner)->get('/admin')->assertOk()->assertSee('Dashboard');
     }
 }
-

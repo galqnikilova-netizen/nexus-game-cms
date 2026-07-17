@@ -1,46 +1,42 @@
 import './bootstrap';
-import 'bootstrap';
 
-const mobileMenu = document.querySelector('.mobile-menu');
+const toggleDrawer = (drawer, open) => {
+    if (!drawer) return;
+    const panel = drawer.querySelector('aside');
+    drawer.classList.toggle('pointer-events-none', !open);
+    drawer.classList.toggle('opacity-0', !open);
+    panel?.classList.toggle('translate-x-full', !open && panel.classList.contains('right-0'));
+    panel?.classList.toggle('-translate-x-full', !open && panel.classList.contains('left-0'));
+    document.body.classList.toggle('overflow-hidden', open);
+};
 
-mobileMenu?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => mobileMenu.removeAttribute('open'));
-});
+const mobile = document.querySelector('#nx-mobile-menu');
+document.querySelector('#nx-menu-open')?.addEventListener('click', () => toggleDrawer(mobile, true));
+mobile?.querySelectorAll('[data-nx-menu-close], a').forEach((item) => item.addEventListener('click', () => toggleDrawer(mobile, false)));
 
-document.addEventListener('click', (event) => {
-    if (mobileMenu?.open && !mobileMenu.contains(event.target)) mobileMenu.removeAttribute('open');
-});
+const adminMobile = document.querySelector('#nx-admin-menu');
+document.querySelector('#nx-admin-menu-open')?.addEventListener('click', () => toggleDrawer(adminMobile, true));
+adminMobile?.querySelectorAll('[data-nx-admin-close], a').forEach((item) => item.addEventListener('click', () => toggleDrawer(adminMobile, false)));
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') mobileMenu?.removeAttribute('open');
+    if (event.key === 'Escape') { toggleDrawer(mobile, false); toggleDrawer(adminMobile, false); }
 });
-document.querySelector('[data-close-menu]')?.addEventListener('click', () => mobileMenu?.removeAttribute('open'));
 
-const colorInput = document.querySelector('#accent-color');
-const colorOutput = document.querySelector('#accent-output');
-const previewName = document.querySelector('#preview-name');
-const siteName = document.querySelector('#site-name');
-const applyPreview = (color) => { if (!color) return; document.body.style.setProperty('--accent', color); if (colorOutput) colorOutput.textContent = color.toUpperCase(); };
-colorInput?.addEventListener('input', (event) => applyPreview(event.target.value));
-siteName?.addEventListener('input', (event) => { if (previewName) previewName.textContent = event.target.value || 'NEXUS'; });
-document.querySelectorAll('[data-color]').forEach((button) => button.addEventListener('click', () => { colorInput.value = button.dataset.color; applyPreview(button.dataset.color); }));
-
-const serverBrowser = document.querySelector('[data-server-browser]');
-document.querySelectorAll('[data-server-view]').forEach((button) => {
-    button.addEventListener('click', () => {
-        const view = button.dataset.serverView;
-        serverBrowser.dataset.view = view;
-        document.querySelectorAll('[data-server-view]').forEach((item) => item.classList.toggle('active', item === button));
-        localStorage.setItem('nexus-server-view', view);
+const browser = document.querySelector('[data-server-browser]');
+document.querySelectorAll('[data-server-view]').forEach((button, index) => button.addEventListener('click', () => {
+    browser?.children[0]?.classList.toggle('hidden', index === 1);
+    browser?.children[1]?.classList.toggle('hidden', index === 0);
+    document.querySelectorAll('[data-server-view]').forEach((item) => {
+        item.classList.toggle('bg-[var(--accent)]', item === button);
+        item.classList.toggle('text-black', item === button);
+        item.classList.toggle('text-slate-500', item !== button);
     });
-});
-if (serverBrowser) {
-    const savedView = localStorage.getItem('nexus-server-view');
-    if (['cards', 'table'].includes(savedView)) serverBrowser.querySelector(`[data-server-view="${savedView}"]`)?.click();
-}
+}));
+
 document.querySelectorAll('[data-copy-server]').forEach((button) => button.addEventListener('click', async () => {
     await navigator.clipboard.writeText(button.dataset.copyServer);
-    const label = button.textContent;
-    button.textContent = 'COPIED';
-    setTimeout(() => { button.textContent = label; }, 1200);
+    button.textContent = 'COPIED'; setTimeout(() => { button.textContent = 'COPY IP'; }, 1200);
 }));
+
+const colorInput = document.querySelector('#accent-color');
+colorInput?.addEventListener('input', (event) => document.body.style.setProperty('--accent', event.target.value));
