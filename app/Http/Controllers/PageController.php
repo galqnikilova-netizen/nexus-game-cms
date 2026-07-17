@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function community(): View
+    public function community(Request $request): View
     {
-        return view('community', ['members' => User::query()->latest()->limit(8)->get(), 'memberCount' => User::count()]);
+        $search = trim((string) $request->query('q'));
+        $members = User::query()
+            ->when($search !== '', fn ($query) => $query->where(fn ($match) => $match
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('steam_id', 'like', "%{$search}%")))
+            ->latest()->limit(24)->get();
+
+        return view('community', ['members' => $members, 'memberCount' => User::count(), 'search' => $search]);
     }
 
     public function shop(): View

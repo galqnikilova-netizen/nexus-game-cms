@@ -21,6 +21,19 @@ headerMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click
     document.querySelector('.header_burger')?.classList.remove('active');
 }));
 
+const closeNavPopovers = (except = null) => document.querySelectorAll('[data-popover-panel]').forEach((panel) => {
+    if (panel !== except) panel.classList.remove('opened');
+});
+document.querySelectorAll('[data-nav-popover]').forEach((button) => button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const panel = document.querySelector(`[data-popover-panel="${button.dataset.navPopover}"]`);
+    const open = !panel?.classList.contains('opened');
+    closeNavPopovers(panel);
+    panel?.classList.toggle('opened', open);
+}));
+document.querySelectorAll('[data-popover-panel]').forEach((panel) => panel.addEventListener('click', (event) => event.stopPropagation()));
+document.addEventListener('click', () => closeNavPopovers());
+
 const n3Menu = document.querySelector('#n3-menu');
 const toggleN3Menu = (open) => {
     if (!n3Menu) return;
@@ -44,7 +57,7 @@ document.querySelector('[data-admin-sheet-open]')?.addEventListener('click', () 
 adminSheet?.querySelectorAll('[data-admin-sheet-close], a').forEach((item) => item.addEventListener('click', () => setSheet(adminSheet, false)));
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') { toggleN3Menu(false); setSheet(adminSheet, false); }
+    if (event.key === 'Escape') { toggleN3Menu(false); setSheet(adminSheet, false); closeNavPopovers(); headerMenu?.classList.remove('opened'); }
 });
 
 document.querySelectorAll('[data-copy-server]').forEach((button) => button.addEventListener('click', async (event) => {
