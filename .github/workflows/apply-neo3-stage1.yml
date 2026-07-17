@@ -1,0 +1,38 @@
+name: Apply exact Neo3 stage 1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.bootstrap/neo3-stage1.b64'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout staged patch
+        uses: actions/checkout@v4
+
+      - name: Validate and apply exact Neo3 patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode .bootstrap/neo3-stage1.b64 > /tmp/nexus-neo3-stage1-patch.tar.gz
+          tar -tzf /tmp/nexus-neo3-stage1-patch.tar.gz >/dev/null
+          tar -xzf /tmp/nexus-neo3-stage1-patch.tar.gz
+          rm -rf .bootstrap
+          rm -f .github/workflows/apply-neo3-stage1.yml
+
+      - name: Commit exact Neo3 stage 1
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: apply exact Neo3 design stage 1"
+          git push
