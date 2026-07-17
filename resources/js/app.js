@@ -1,22 +1,29 @@
 import './bootstrap';
 
+const n3Menu = document.querySelector('#n3-menu');
+const toggleN3Menu = (open) => {
+    if (!n3Menu) return;
+    n3Menu.classList.toggle('open', open);
+    n3Menu.setAttribute('aria-hidden', String(!open));
+    document.body.style.overflow = open ? 'hidden' : '';
+};
+document.querySelector('[data-n3-menu-open]')?.addEventListener('click', () => toggleN3Menu(true));
+n3Menu?.querySelectorAll('[data-n3-menu-close],a').forEach((item) => item.addEventListener('click', () => toggleN3Menu(false)));
+
 const setSheet = (sheet, open) => {
     if (!sheet) return;
     sheet.classList.toggle('is-open', open);
+    sheet.classList.toggle('open', open);
     sheet.setAttribute('aria-hidden', String(!open));
     document.body.classList.toggle('overflow-hidden', open);
 };
 
-const publicSheet = document.querySelector('#nx-mobile-menu');
-document.querySelector('[data-mobile-sheet-open]')?.addEventListener('click', () => setSheet(publicSheet, true));
-publicSheet?.querySelectorAll('[data-mobile-sheet-close], a').forEach((item) => item.addEventListener('click', () => setSheet(publicSheet, false)));
-
-const adminSheet = document.querySelector('#nx-admin-menu');
+const adminSheet = document.querySelector('#n3-admin-menu');
 document.querySelector('[data-admin-sheet-open]')?.addEventListener('click', () => setSheet(adminSheet, true));
 adminSheet?.querySelectorAll('[data-admin-sheet-close], a').forEach((item) => item.addEventListener('click', () => setSheet(adminSheet, false)));
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') { setSheet(publicSheet, false); setSheet(adminSheet, false); }
+    if (event.key === 'Escape') { toggleN3Menu(false); setSheet(adminSheet, false); }
 });
 
 document.querySelectorAll('[data-copy-server]').forEach((button) => button.addEventListener('click', async (event) => {
@@ -49,13 +56,13 @@ const applyServerFilters = () => {
 search?.addEventListener('input', applyServerFilters);
 document.querySelectorAll('[data-server-filter]').forEach((button) => button.addEventListener('click', () => {
     statusFilter = button.dataset.serverFilter;
-    document.querySelectorAll('[data-server-filter]').forEach((item) => item.classList.toggle('is-active', item === button));
+    document.querySelectorAll('[data-server-filter]').forEach((item) => item.classList.toggle('active', item === button));
     applyServerFilters();
 }));
 document.querySelectorAll('[data-server-game]').forEach((button) => button.addEventListener('click', () => {
-    const selected = button.classList.contains('is-active');
-    document.querySelectorAll('[data-server-game]').forEach((item) => item.classList.remove('is-active'));
-    button.classList.toggle('is-active', !selected);
+    const selected = button.classList.contains('active');
+    document.querySelectorAll('[data-server-game]').forEach((item) => item.classList.remove('active'));
+    button.classList.toggle('active', !selected);
     gameFilter = selected ? 'all' : button.dataset.serverGame;
     applyServerFilters();
 }));
@@ -63,6 +70,7 @@ document.querySelectorAll('[data-server-game]').forEach((button) => button.addEv
 const setModal = (modal, open) => {
     if (!modal) return;
     modal.classList.toggle('is-open', open);
+    modal.classList.toggle('open', open);
     modal.setAttribute('aria-hidden', String(!open));
     document.body.classList.toggle('overflow-hidden', open);
 };
@@ -82,7 +90,7 @@ document.querySelectorAll('[data-product-open]').forEach((button) => button.addE
 }));
 
 document.querySelectorAll('[data-modal-close]').forEach((button) => button.addEventListener('click', () => {
-    setModal(button.closest('.neo-modal'), false);
+    setModal(button.closest('.n3-modal'), false);
 }));
 
 document.querySelectorAll('[data-amount]').forEach((button) => button.addEventListener('click', () => {
@@ -93,8 +101,7 @@ document.querySelectorAll('[data-amount]').forEach((button) => button.addEventLi
 
 const colorInput = document.querySelector('#accent-color');
 colorInput?.addEventListener('input', (event) => {
-    document.documentElement.style.setProperty('--nx-accent', event.target.value);
-    document.documentElement.style.setProperty('--accent', event.target.value);
+    document.documentElement.style.setProperty('--n3-accent', event.target.value);
     const hex = event.target.value.replace('#', '');
-    if (hex.length === 6) document.documentElement.style.setProperty('--nx-accent-rgb', `${parseInt(hex.slice(0,2),16)},${parseInt(hex.slice(2,4),16)},${parseInt(hex.slice(4,6),16)}`);
+    if (hex.length === 6) document.documentElement.style.setProperty('--n3-rgb', `${parseInt(hex.slice(0,2),16)},${parseInt(hex.slice(2,4),16)},${parseInt(hex.slice(4,6),16)}`);
 });

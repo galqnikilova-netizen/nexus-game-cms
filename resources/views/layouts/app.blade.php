@@ -1,88 +1,57 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_','-',app()->getLocale()) }}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? $nexusAppearance['site_name'] }}</title>
-    <meta name="description" content="{{ $nexusAppearance['site_tagline'] }}">
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title ?? $nexusAppearance['site_name'] }}</title><meta name="description" content="{{ $nexusAppearance['site_tagline'] }}">
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 @php
-    $accentHex = ltrim($nexusAppearance['accent'], '#');
-    $accentRgb = strlen($accentHex)===6 ? hexdec(substr($accentHex,0,2)).','.hexdec(substr($accentHex,2,2)).','.hexdec(substr($accentHex,4,2)) : '124,134,255';
-    $nav = [
+    $accent=ltrim($nexusAppearance['accent'],'#');
+    $rgb=strlen($accent)===6?hexdec(substr($accent,0,2)).','.hexdec(substr($accent,2,2)).','.hexdec(substr($accent,4,2)):'112,104,232';
+    $nav=[
         ['home','home',route('home'),__('ui.nav.home')],
         ['leaderboard.*','leaderboard',route('leaderboard.index'),app()->getLocale()==='bg'?'Класация':'Leaders'],
         ['servers.*','servers',route('servers.index'),__('ui.nav.servers')],
         ['shop.*','shop',route('shop.index'),__('ui.nav.shop')],
         ['bans.*','bans',route('bans.index'),__('ui.nav.bans')],
+        ['community.*','community',route('community.index'),app()->getLocale()==='bg'?'Общност':'Community'],
     ];
-    $onlineCount = \App\Models\GameServer::query()->where('is_visible',true)->sum('players_online');
+    $onlineCount=\App\Models\GameServer::query()->where('is_visible',true)->sum('players_online');
 @endphp
-<body style="--nx-accent:{{ $nexusAppearance['accent'] }};--accent:{{ $nexusAppearance['accent'] }};--nx-accent-rgb:{{ $accentRgb }}">
-<div class="nx-app">
-    <aside class="nx-rail" aria-label="Main navigation">
-        <a class="nx-rail-logo" href="{{ route('home') }}" aria-label="NEXUS home"><span class="nx-logo-mark">N</span></a>
-        <nav class="nx-rail-nav">
-            @foreach($nav as $item)
-                <a class="nx-rail-link {{ request()->routeIs($item[0]) ? 'is-active' : '' }}" href="{{ $item[2] }}" aria-label="{{ $item[3] }}">
-                    <x-nx-icon :name="$item[1]"/><span class="nx-tip">{{ $item[3] }}</span>
-                </a>
-            @endforeach
-            <a class="nx-rail-link {{ request()->routeIs('community.*') ? 'is-active' : '' }}" href="{{ route('community.index') }}" aria-label="Community"><x-nx-icon name="community"/><span class="nx-tip">Community</span></a>
+<body style="--n3-accent:{{ $nexusAppearance['accent'] }};--n3-rgb:{{ $rgb }}">
+<div class="n3-app">
+    <aside class="n3-rail">
+        <a class="n3-logo" href="{{ route('home') }}"><span>N</span></a>
+        <nav class="n3-nav">
+            @foreach($nav as $item)<a class="n3-nav-link {{ request()->routeIs($item[0])?'active':'' }}" href="{{ $item[2] }}"><x-nx-icon :name="$item[1]"/><span class="n3-tooltip">{{ $item[3] }}</span></a>@endforeach
         </nav>
-        <div class="nx-rail-bottom">
-            @auth
-                <a class="nx-rail-link" href="{{ route('profile.show',auth()->user()) }}" aria-label="Profile"><x-nx-icon name="user"/><span class="nx-tip">Profile</span></a>
-            @else
-                <a class="nx-rail-link" href="{{ route('login') }}" aria-label="Sign in"><x-nx-icon name="user"/><span class="nx-tip">Sign in</span></a>
-            @endauth
-        </div>
+        <nav class="n3-nav bottom">
+            @auth<a class="n3-nav-link" href="{{ route('profile.show',auth()->user()) }}"><x-nx-icon name="user"/><span class="n3-tooltip">Profile</span></a>@else<a class="n3-nav-link" href="{{ route('login') }}"><x-nx-icon name="user"/><span class="n3-tooltip">Sign in</span></a>@endauth
+        </nav>
     </aside>
-
-    <header class="nx-topbar">
-        <div class="nx-topbar-inner">
-            <a class="nx-brand" href="{{ route('home') }}"><span><strong>{{ strtoupper($nexusAppearance['site_name']) }}</strong><small>GAME COMMUNITY NETWORK</small></span></a>
-            <span class="nx-live-pill"><i class="nx-live-dot"></i>{{ $onlineCount }} {{ app()->getLocale()==='bg'?'играчи онлайн':'players online' }}</span>
-            <label class="nx-global-search"><x-nx-icon name="search"/><input type="search" placeholder="{{ app()->getLocale()==='bg'?'Намери играч или сървър':'Find player or server' }}"></label>
-            <a class="nx-top-action" href="{{ route('locale.switch',app()->getLocale()==='bg'?'en':'bg') }}">{{ strtoupper(app()->getLocale()) }}</a>
-            @auth
-                @if(auth()->user()->isAdmin())<a class="nx-top-action is-primary" href="{{ route('admin.dashboard') }}"><x-nx-icon name="dashboard"/> Control</a>@endif
-                <a class="nx-top-action" href="{{ route('profile.show',auth()->user()) }}">@if(auth()->user()->avatar_url)<img class="nx-avatar" src="{{ auth()->user()->avatar_url }}" alt="">@endif {{ auth()->user()->name }}</a>
-            @else
-                <a class="nx-top-action is-primary" href="{{ route('login') }}"><x-nx-icon name="user"/> {{ app()->getLocale()==='bg'?'Вход':'Sign in' }}</a>
-            @endauth
-        </div>
+    <header class="n3-top"><div class="n3-top-inner">
+        <a class="n3-brand" href="{{ route('home') }}"><span><b>{{ strtoupper($nexusAppearance['site_name']) }}</b><small>GAME COMMUNITY NETWORK</small></span></a>
+        <span class="n3-online"><i></i>{{ $onlineCount }} {{ app()->getLocale()==='bg'?'играчи онлайн':'players online' }}</span>
+        <label class="n3-search"><x-nx-icon name="search"/><input type="search" placeholder="{{ app()->getLocale()==='bg'?'Намери играч или сървър':'Find player or server' }}"></label>
+        <a class="n3-action" href="{{ route('locale.switch',app()->getLocale()==='bg'?'en':'bg') }}">{{ strtoupper(app()->getLocale()) }}</a>
+        @auth
+            @if(auth()->user()->isAdmin())<a class="n3-action primary" href="{{ route('admin.dashboard') }}"><x-nx-icon name="dashboard"/> Control</a>@endif
+            <a class="n3-action" href="{{ route('profile.show',auth()->user()) }}">@if(auth()->user()->avatar_url)<img src="{{ auth()->user()->avatar_url }}" alt="">@endif{{ auth()->user()->name }}</a>
+        @else<a class="n3-action primary" href="{{ route('login') }}"><x-nx-icon name="user"/>{{ app()->getLocale()==='bg'?'Вход':'Sign in' }}</a>@endauth
+    </div></header>
+    <header class="n3-mobile-top">
+        <a class="n3-logo" href="{{ route('home') }}"><span>N</span></a><b class="n3-mobile-brand">NEXUS</b>
+        <div class="n3-mobile-actions"><a class="n3-mobile-action" href="{{ route('locale.switch',app()->getLocale()==='bg'?'en':'bg') }}">{{ strtoupper(app()->getLocale()) }}</a>@auth<a class="n3-mobile-action" href="{{ route('profile.show',auth()->user()) }}"><x-nx-icon name="user"/></a>@else<a class="n3-mobile-action" href="{{ route('login') }}"><x-nx-icon name="user"/></a>@endauth</div>
     </header>
-
-    <header class="nx-mobile-top">
-        <a href="{{ route('home') }}" class="nx-logo-mark">N</a><span class="nx-mobile-brand">NEXUS</span>
-        <div class="nx-mobile-top-actions">
-            <a class="nx-mobile-icon" href="{{ route('locale.switch',app()->getLocale()==='bg'?'en':'bg') }}">{{ strtoupper(app()->getLocale()) }}</a>
-            @auth<a class="nx-mobile-icon" href="{{ route('profile.show',auth()->user()) }}"><x-nx-icon name="user"/></a>@else<a class="nx-mobile-icon" href="{{ route('login') }}"><x-nx-icon name="user"/></a>@endauth
-        </div>
-    </header>
-
-    <main class="nx-page">{{ $slot }}</main>
-
-    <nav class="nx-mobile-nav" aria-label="Mobile navigation">
-        @foreach(array_slice($nav,0,4) as $item)<a class="{{ request()->routeIs($item[0])?'is-active':'' }}" href="{{ $item[2] }}"><x-nx-icon :name="$item[1]"/><span>{{ $item[3] }}</span></a>@endforeach
-        <button type="button" data-mobile-sheet-open><x-nx-icon name="more"/><span>{{ app()->getLocale()==='bg'?'Още':'More' }}</span></button>
+    <main class="n3-main">{{ $slot }}</main>
+    <nav class="n3-mobile-nav">
+        @foreach(array_slice($nav,0,4) as $item)<a class="{{ request()->routeIs($item[0])?'active':'' }}" href="{{ $item[2] }}"><x-nx-icon :name="$item[1]"/><span>{{ $item[3] }}</span></a>@endforeach
+        <button type="button" data-n3-menu-open><x-nx-icon name="more"/><span>{{ app()->getLocale()==='bg'?'Още':'More' }}</span></button>
     </nav>
-    <div class="nx-mobile-sheet" id="nx-mobile-menu" aria-hidden="true">
-        <button class="nx-sheet-backdrop" data-mobile-sheet-close aria-label="Close"></button>
-        <div class="nx-sheet-panel"><div class="nx-sheet-grid">
-            <a class="nx-sheet-link" href="{{ route('bans.index') }}"><x-nx-icon name="bans"/>Ban list</a>
-            <a class="nx-sheet-link" href="{{ route('news.index') }}"><x-nx-icon name="news"/>News</a>
-            <a class="nx-sheet-link" href="{{ route('community.index') }}"><x-nx-icon name="community"/>Community</a>
-            <a class="nx-sheet-link" href="{{ route('about') }}"><x-nx-icon name="community"/>About</a>
-            @auth
-                <a class="nx-sheet-link" href="{{ route('profile.show',auth()->user()) }}"><x-nx-icon name="user"/>Profile</a>
-                @if(auth()->user()->isAdmin())<a class="nx-sheet-link" href="{{ route('admin.dashboard') }}"><x-nx-icon name="dashboard"/>Control</a>@endif
-            @else<a class="nx-sheet-link" href="{{ route('login') }}"><x-nx-icon name="user"/>Sign in</a>@endauth
-        </div></div>
-    </div>
+    <div class="n3-mobile-drawer" id="n3-menu" aria-hidden="true"><button class="n3-drawer-backdrop" data-n3-menu-close></button><div class="n3-drawer-panel"><div class="n3-drawer-handle"></div><div class="n3-drawer-grid">
+        @foreach(array_slice($nav,4) as $item)<a class="n3-drawer-link" href="{{ $item[2] }}"><x-nx-icon :name="$item[1]"/>{{ $item[3] }}</a>@endforeach
+        <a class="n3-drawer-link" href="{{ route('news.index') }}"><x-nx-icon name="news"/>News</a><a class="n3-drawer-link" href="{{ route('about') }}"><x-nx-icon name="community"/>About</a>
+        @auth @if(auth()->user()->isAdmin())<a class="n3-drawer-link" href="{{ route('admin.dashboard') }}"><x-nx-icon name="dashboard"/>Control</a>@endif @endauth
+    </div></div></div>
 </div>
-</body>
-</html>
+</body></html>
