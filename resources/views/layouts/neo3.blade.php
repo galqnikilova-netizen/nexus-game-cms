@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/neo3-exact-core.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/neo3-exact-home.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/neo3-nexus-adapter.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/neo3-pages.css') }}">
     @stack('styles')
 </head>
 <body class="sidebar-collapse neo3-nexus">
     @include('partials.neo3-sidebar')
+    <div class="neo3-mobile-backdrop" data-neo3-backdrop></div>
     <div class="global-container">
         <div class="container-fluid">
             @include('partials.neo3-navbar')
@@ -23,6 +25,7 @@
     @include('partials.neo3-footer')
     <div class="neo3-toast">IP адресът е копиран</div>
     <script src="{{ asset('assets/js/neo3-exact.js') }}" defer></script>
+    <script src="{{ asset('assets/js/neo3-pages.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>
