@@ -1,0 +1,166 @@
+/* NEXUS Laravel adapter for the captured Neo Remastered design system. */
+@font-face {
+    font-family: "Unbounded";
+    src: url("/storage/assets/fonts/vendors/unb/Unbounded-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Unbounded";
+    src: url("/storage/assets/fonts/vendors/unb/Unbounded-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Unbounded";
+    src: url("/storage/assets/fonts/vendors/unb/Unbounded-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "SF Pro Display";
+    src: url("/storage/assets/fonts/vendors/sfpro/SFProDisplay-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "SF Pro Display";
+    src: url("/storage/assets/fonts/vendors/sfpro/SFProDisplay-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "SF Pro Display";
+    src: url("/storage/assets/fonts/vendors/sfpro/SFProDisplay-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --nexus-sidebar-collapsed: 74px;
+    --nexus-sidebar-open: 270px;
+}
+
+html {
+    color-scheme: dark;
+    background: var(--bg);
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+.global-container {
+    min-height: 100vh;
+}
+
+.neo-page {
+    width: 100%;
+    min-width: 0;
+}
+
+.logo-text {
+    min-width: 0;
+    text-decoration: none;
+}
+
+.logo-text > b {
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.site_logo_neo {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+}
+
+.sidebar__toggle,
+.header_burger,
+.button-icon,
+.online {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.sidebar__lang {
+    margin-left: auto;
+}
+
+.neo-nav-popover {
+    z-index: 120;
+}
+
+@media (min-width: 901px) {
+    .neo-mobile-nav {
+        display: none !important;
+    }
+}
+
+@media (max-width: 900px) {
+    body {
+        padding-bottom: 72px;
+    }
+
+    .sidebar {
+        z-index: 150;
+    }
+
+    .global-container,
+    html.sidebar-is-open .global-container {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .nav_header_menu {
+        max-height: calc(100vh - 86px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .neo-mobile-nav {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+@media (max-width: 560px) {
+    .logo-text > b,
+    .online__label,
+    .navbar_usermenu .pay_button > span {
+        display: none;
+    }
+
+    .container-fluid {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
