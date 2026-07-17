@@ -3,88 +3,110 @@ set -Eeuo pipefail
 
 DOMAIN="community.cs2monitor.eu"
 ROOT="/home/${DOMAIN}"
-APP="${ROOT}/nexus-game-cms"
-WEB="${ROOT}/public_html"
+APP="${ROOT}/public_html"
+OWNER="commu1994"
+GROUP="commu1994"
 BACKUPS="${ROOT}/backups"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-TMP="$(mktemp -d)"
-ARCHIVE="${TMP}/nexus-main.tar.gz"
-SOURCE="${TMP}/source"
 
-cleanup(){ rm -rf "${TMP}"; }
-trap cleanup EXIT
+fail(){ echo "[ERROR] $*" >&2; exit 1; }
 
-[[ $EUID -eq 0 ]] || { echo "Run as root."; exit 1; }
-mkdir -p "${ROOT}" "${BACKUPS}" "${SOURCE}"
+[[ $EUID -eq 0 ]] || fail "Run this script as root."
+[[ -d "${APP}" ]] || fail "Application directory is missing: ${APP}"
+[[ -f "${APP}/artisan" ]] || fail "Laravel artisan file is missing: ${APP}/artisan"
+command -v git >/dev/null 2>&1 || fail "git is not installed."
+command -v composer >/dev/null 2>&1 || fail "composer is not installed."
+command -v php >/dev/null 2>&1 || fail "php-cli is not installed."
 
-OWNER="$(stat -c '%U' "${WEB}" 2>/dev/null || echo root)"
-GROUP="$(stat -c '%G' "${WEB}" 2>/dev/null || echo root)"
+mkdir -p "${BACKUPS}"
 
-export DEBIAN_FRONTEND=noninteractive
-apt-get update -qq
-apt-get install -y -qq curl wget tar unzip rsync git composer php-cli php-sqlite3 php-mbstring php-xml php-curl php-zip >/dev/null
-
-wget -q --show-progress -O "${ARCHIVE}" "https://codeload.github.com/galqnikilova-netizen/nexus-game-cms/tar.gz/refs/heads/main"
-tar -xzf "${ARCHIVE}" -C "${SOURCE}" --strip-components=1
-[[ -f "${SOURCE}/artisan" ]] || { echo "Invalid project archive."; exit 1; }
-
-if [[ -e "${APP}" ]]; then
-  mv "${APP}" "${BACKUPS}/nexus-game-cms-${STAMP}"
+if [[ -f "${APP}/.env" ]]; then
+  cp -a "${APP}/.env" "${BACKUPS}/community.env.${STAMP}"
 fi
-if [[ -e "${WEB}" || -L "${WEB}" ]]; then
-  mv "${WEB}" "${BACKUPS}/public_html-${STAMP}"
+if [[ -f "${APP}/database/database.sqlite" ]]; then
+  cp -a "${APP}/database/database.sqlite" "${BACKUPS}/community.sqlite.${STAMP}"
 fi
 
-mv "${SOURCE}" "${APP}"
+echo "=== Updating project from GitHub main ==="
 cd "${APP}"
+git config --global --add safe.directory "${APP}" 2>/dev/null || true
+[[ -d .git ]] || fail "${APP} is not a Git repository."
+git fetch --prune origin main
+git reset --hard origin/main
+git clean -fd -e .env -e database/database.sqlite -e storage
 
-cp .env.example .env
-mkdir -p database storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
+[[ -f public/assets/css/neo3-exact-core.css ]] || fail "neo3-exact-core.css is missing after update."
+[[ -f public/assets/css/neo3-exact-home.css ]] || fail "neo3-exact-home.css is missing after update."
+[[ -f public/assets/css/neo3-nexus-adapter.css ]] || fail "neo3-nexus-adapter.css is missing after update."
+
+rm -f public/neo3-stage1-asset.php
+
+mkdir -p \
+  storage/framework/cache/data \
+  storage/framework/sessions \
+  storage/framework/views \
+  storage/logs \
+  bootstrap/cache \
+  database
+
 touch database/database.sqlite
 
-cat > .env <<EOF
-APP_NAME="NEXUS Game CMS"
-APP_ENV=production
-APP_KEY=
-APP_DEBUG=true
-APP_URL=https://${DOMAIN}
-APP_LOCALE=bg
-APP_FALLBACK_LOCALE=en
-LOG_CHANNEL=stack
-LOG_LEVEL=debug
-DB_CONNECTION=sqlite
-DB_DATABASE=${APP}/database/database.sqlite
-SESSION_DRIVER=file
-CACHE_STORE=file
-QUEUE_CONNECTION=sync
-FILESYSTEM_DISK=local
-EOF
+if [[ ! -f .env ]]; then
+  cp .env.example .env
+  sed -i "s#^APP_URL=.*#APP_URL=https://${DOMAIN}#" .env
+  sed -i "s#^DB_CONNECTION=.*#DB_CONNECTION=sqlite#" .env
+  sed -i "s#^DB_DATABASE=.*#DB_DATABASE=${APP}/database/database.sqlite#" .env
+fi
 
-composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
-php artisan key:generate --force
-php artisan optimize:clear
-php artisan migrate --seed --force
-php artisan storage:link --force || true
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+sed -i 's/^APP_ENV=.*/APP_ENV=production/' .env
+sed -i 's/^APP_DEBUG=.*/APP_DEBUG=false/' .env
+sed -i "s#^APP_URL=.*#APP_URL=https://${DOMAIN}#" .env
+sed -i 's/^LOG_LEVEL=.*/LOG_LEVEL=error/' .env
+sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
+sed -i "s#^DB_DATABASE=.*#DB_DATABASE=${APP}/database/database.sqlite#" .env
 
-ln -s "${APP}/public" "${WEB}"
 chown -R "${OWNER}:${GROUP}" "${APP}"
-chmod -R ug+rwX "${APP}/storage" "${APP}/bootstrap/cache" "${APP}/database"
 find "${APP}" -type d -exec chmod 755 {} \;
 find "${APP}" -type f -exec chmod 644 {} \;
-chmod 775 "${APP}/storage" "${APP}/bootstrap/cache" "${APP}/database"
-chmod 664 "${APP}/database/database.sqlite" "${APP}/.env"
+find storage bootstrap/cache database -type d -exec chmod 775 {} \;
+find storage bootstrap/cache database -type f -exec chmod 664 {} \;
+chmod 640 .env
 
-if command -v systemctl >/dev/null 2>&1; then
-  systemctl restart lsws 2>/dev/null || systemctl restart openlitespeed 2>/dev/null || true
+echo "=== Installing production dependencies ==="
+runuser -u "${OWNER}" -- composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+if ! grep -q '^APP_KEY=base64:' .env; then
+  runuser -u "${OWNER}" -- php artisan key:generate --force
 fi
+
+runuser -u "${OWNER}" -- php artisan optimize:clear
+runuser -u "${OWNER}" -- php artisan migrate --force
+runuser -u "${OWNER}" -- php artisan config:cache
+runuser -u "${OWNER}" -- php artisan route:cache
+runuser -u "${OWNER}" -- php artisan view:cache
+
+/usr/local/lsws/bin/lswsctrl restart
+sleep 3
+
+echo "=== Production checks ==="
+for PATHNAME in \
+  / \
+  /leaderboard \
+  /store \
+  /assets/css/neo3-exact-core.css \
+  /assets/css/neo3-exact-home.css \
+  /assets/css/neo3-nexus-adapter.css
+ do
+  STATUS="$(curl -ksS -o /dev/null -w '%{http_code}' --resolve "${DOMAIN}:443:127.0.0.1" "https://${DOMAIN}${PATHNAME}")"
+  TYPE="$(curl -ksSI --resolve "${DOMAIN}:443:127.0.0.1" "https://${DOMAIN}${PATHNAME}" | awk -F': ' 'tolower($1)=="content-type"{gsub("\r","");print $2;exit}')"
+  echo "${PATHNAME}: HTTP ${STATUS} | ${TYPE:-unknown}"
+  [[ "${STATUS}" == "200" ]] || fail "HTTP check failed for ${PATHNAME}"
+ done
 
 echo
 echo "============================================================"
-echo "NEXUS Neo3 Stage 3 deployed successfully"
-echo "URL: https://${DOMAIN}"
-echo "Backup: ${BACKUPS}"
-echo "Owner: ${OWNER}:${GROUP}"
+echo "NEXUS production update completed successfully"
+echo "Application: ${APP}"
+echo "Document root: ${APP}/public"
+echo "Backup directory: ${BACKUPS}"
 echo "============================================================"
