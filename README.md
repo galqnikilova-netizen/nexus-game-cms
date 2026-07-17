@@ -1,17 +1,30 @@
 # NEXUS Game CMS
 
-Modern self-hosted gaming community CMS built on Laravel 12, with a complete dark responsive UI inspired by the uploaded Neo3 reference.
+Modern self-hosted gaming community CMS built on Laravel 12.
 
-## Implemented foundation
+## Neo3 exact-theme migration
 
-- Laravel 12 application skeleton
-- Responsive sidebar, mobile navigation and reusable design system
-- Public pages: Home, Leaderboard, Store, Skinchanger, Punishments, FAQ, Rules, Tickets and Player profile
-- Admin dashboard foundation
-- Demo database schema for servers, players, products, purchases, punishments and tickets
-- Bulgarian-first interface with locale-ready structure
-- Seed data for immediate local preview
-- cPanel/CyberPanel friendly public directory
+The uploaded Neo3 reference archive is the visual source of truth for the project. The migration is intentionally delivered in stages so every public and administrative screen can retain the same component structure, spacing, breakpoints and responsive behavior.
+
+### Stage 1 — exact public shell and homepage
+
+- original Neo3 global CSS and page-module CSS integrated locally
+- exact Neo3 sidebar structure and collapse behavior
+- exact Neo3 navbar, player search, balance/language controls and Steam login button
+- exact mobile tabbar and footer structure
+- exact homepage component families: extended activity feed, mode cards, filters, server cards, social banners, slider, donor panel, statistics and reward feed
+- NEXUS branding and Bulgarian content mapped onto the original component system
+- no bundled third-party font files; safe system fallbacks are used
+
+### Following stages
+
+1. Leaderboard and player profile
+2. Store and payment flows
+3. Punishments and CSBans views
+4. Skinchanger
+5. FAQ, rules and tickets
+6. Authentication and account area
+7. Administration and installer/update system
 
 ## Requirements
 
@@ -31,10 +44,6 @@ php artisan serve
 
 Open `http://127.0.0.1:8000`.
 
-## Design principles
+## Current baseline
 
-The code does not copy the original site's identity or branding. It rebuilds the visual language as an original NEXUS system: near-black layered surfaces, electric blue accent, compact cards, strong typography, responsive sidebar and consistent component spacing.
-
-## Current status
-
-This is the clean Sprint 1 foundation. Public UI and database structure are ready. Production integrations such as Steam authentication, real game-server polling, CSBans, payment gateways and installer/update automation are intentionally separated for the next backend sprints.
+`NEXUS_NEO3_EXACT_STAGE1`
