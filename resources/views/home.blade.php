@@ -8,7 +8,7 @@
 <div class="neo3-native-home">
     <div class="row" id="rowModsServers">
         <div class="col-md-12">
-            <div class="mods__wrapper mods__row-5 mods__centered">
+            <div class="mods__wrapper mods__row-5 mods__centered mods-ready">
                 @forelse($servers as $server)
                     <article class="mods__card" data-mod="{{ strtoupper($server->game) }}">
                         <div class="mods__servers-counter">
@@ -74,9 +74,10 @@
 
     <div class="row neo3-news-row">
         <div class="col-md-9">
-            <div class="image-slider neo3-news-slider">
-                @forelse($posts as $post)
-                    <a class="image-slider__slide" href="{{ route('news.show',$post) }}">
+            <div class="image-slider swiper neo3-news-slider">
+                <div class="image-slider__wrapper swiper-wrapper">
+                @forelse($posts->take(3) as $post)
+                    <a class="image-slider__slide swiper-slide" href="{{ route('news.show',$post) }}">
                         <div class="image-slider__image">
                             <p>{{ $post->category }} · {{ $post->published_at->format('d.m.Y') }}</p>
                             <h3>{{ $post->title }}</h3>
@@ -87,6 +88,7 @@
                 @empty
                     <div class="image-slider__slide"><div class="image-slider__image"><p>NEWS</p><h3>{{ app()->getLocale()==='bg'?'Очаквайте новини':'News coming soon' }}</h3></div></div>
                 @endforelse
+                </div>
             </div>
         </div>
         <div class="col-md-3">
