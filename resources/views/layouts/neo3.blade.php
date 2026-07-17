@@ -7,9 +7,9 @@
     <title>@yield('title', 'NEXUS Game CMS')</title>
     <meta name="description" content="NEXUS Game CMS — gaming community platform.">
     <link rel="icon" href="{{ asset('assets/img/nexus-mark.svg') }}" type="image/svg+xml">
-    <link rel="stylesheet" href="{{ asset('neo3-stage1-asset.php?file=core') }}">
-    <link rel="stylesheet" href="{{ asset('neo3-stage1-asset.php?file=home') }}">
-    <link rel="stylesheet" href="{{ asset('neo3-stage1-asset.php?file=adapter') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/neo3-exact-core.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/neo3-exact-home.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/neo3-nexus-adapter.css') }}">
     @stack('styles')
 </head>
 <body class="sidebar-collapse neo3-nexus">
