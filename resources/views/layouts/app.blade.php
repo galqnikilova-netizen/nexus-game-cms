@@ -10,15 +10,16 @@
     $rgb=strlen($accent)===6?hexdec(substr($accent,0,2)).','.hexdec(substr($accent,2,2)).','.hexdec(substr($accent,4,2)):'112,104,232';
     $nav=[
         ['home','home',route('home'),__('ui.nav.home')],
-        ['leaderboard.*','leaderboard',route('leaderboard.index'),app()->getLocale()==='bg'?'Класация':'Leaders'],
         ['servers.*','servers',route('servers.index'),__('ui.nav.servers')],
+        ['leaderboard.*','leaderboard',route('leaderboard.index'),app()->getLocale()==='bg'?'Класация':'Leaders'],
         ['shop.*','shop',route('shop.index'),__('ui.nav.shop')],
         ['bans.*','bans',route('bans.index'),__('ui.nav.bans')],
+        ['news.*','news',route('news.index'),app()->getLocale()==='bg'?'Новини':'News'],
         ['community.*','community',route('community.index'),app()->getLocale()==='bg'?'Общност':'Community'],
     ];
     $onlineCount=\App\Models\GameServer::query()->where('is_visible',true)->sum('players_online');
 @endphp
-<body style="--n3-accent:{{ $nexusAppearance['accent'] }};--n3-rgb:{{ $rgb }}">
+<body style="--span:{{ $nexusAppearance['accent'] }};--n3-accent:{{ $nexusAppearance['accent'] }};--n3-rgb:{{ $rgb }}">
 <div class="n3-app">
     <aside class="n3-rail">
         <a class="n3-logo" href="{{ route('home') }}"><span>N</span></a>
@@ -50,7 +51,7 @@
     </nav>
     <div class="n3-mobile-drawer" id="n3-menu" aria-hidden="true"><button class="n3-drawer-backdrop" data-n3-menu-close></button><div class="n3-drawer-panel"><div class="n3-drawer-handle"></div><div class="n3-drawer-grid">
         @foreach(array_slice($nav,4) as $item)<a class="n3-drawer-link" href="{{ $item[2] }}"><x-nx-icon :name="$item[1]"/>{{ $item[3] }}</a>@endforeach
-        <a class="n3-drawer-link" href="{{ route('news.index') }}"><x-nx-icon name="news"/>News</a><a class="n3-drawer-link" href="{{ route('about') }}"><x-nx-icon name="community"/>About</a>
+        <a class="n3-drawer-link" href="{{ route('about') }}"><x-nx-icon name="community"/>About</a>
         @auth @if(auth()->user()->isAdmin())<a class="n3-drawer-link" href="{{ route('admin.dashboard') }}"><x-nx-icon name="dashboard"/>Control</a>@endif @endauth
     </div></div></div>
 </div>

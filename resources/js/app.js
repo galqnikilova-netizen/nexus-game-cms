@@ -102,6 +102,7 @@ document.querySelectorAll('[data-amount]').forEach((button) => button.addEventLi
 const colorInput = document.querySelector('#accent-color');
 colorInput?.addEventListener('input', (event) => {
     document.documentElement.style.setProperty('--n3-accent', event.target.value);
+    document.documentElement.style.setProperty('--span', event.target.value);
     const hex = event.target.value.replace('#', '');
     if (hex.length === 6) document.documentElement.style.setProperty('--n3-rgb', `${parseInt(hex.slice(0,2),16)},${parseInt(hex.slice(2,4),16)},${parseInt(hex.slice(4,6),16)}`);
 });
