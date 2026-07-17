@@ -1,4 +1,5 @@
 import './bootstrap';
+import 'bootstrap';
 
 const mobileMenu = document.querySelector('.mobile-menu');
 

@@ -1,20 +1,14 @@
 <!doctype html>
-<html lang="{{ str_replace('_','-',app()->getLocale()) }}">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="csrf-token" content="{{ csrf_token() }}"><title>{{ $title ?? $nexusAppearance['site_name'].' Control' }}</title><meta name="theme-color" content="{{ $nexusAppearance['accent'] }}">@vite(['resources/css/app.css','resources/js/app.js'])</head>
-<body class="admin-body" style="--accent:{{ $nexusAppearance['accent'] }};--accent2:{{ $nexusAppearance['accent'] }}">
-<aside class="sidebar">
-    <a class="brand" href="{{ route('admin.dashboard') }}"><span class="brand-mark">✣</span><span><b>{{ $nexusAppearance['site_name'] }}</b><small>CONTROL CENTER</small></span></a>
-    <div class="side-label">СЪДЪРЖАНИЕ</div>
-    <nav>
-        <a class="{{ request()->routeIs('admin.dashboard')?'active':'' }}" href="{{ route('admin.dashboard') }}">⌂ <span>Табло</span></a>
-        <a class="{{ request()->routeIs('admin.news.*')?'active':'' }}" href="{{ route('admin.news.index') }}">▤ <span>Новини</span></a>
-        <a class="{{ request()->routeIs('admin.servers.*')?'active':'' }}" href="{{ route('admin.servers.index') }}">◉ <span>Сървъри</span></a>
-        <a class="{{ request()->routeIs('admin.users.*','admin.roles.*')?'active':'' }}" href="{{ route('admin.users.index') }}">♙ <span>Потребители</span></a>
-        <a class="{{ request()->routeIs('admin.modules.*')?'active':'' }}" href="{{ route('admin.modules.index') }}">▣ <span>Модули</span></a>
-    </nav>
-    <div class="side-label">СИСТЕМА</div>
-    <nav><a class="{{ request()->routeIs('admin.settings.*')?'active':'' }}" href="{{ route('admin.settings.edit') }}">⚙ <span>Настройки</span></a><a href="{{ route('home') }}">↗ <span>Към сайта</span></a></nav>
-    <form method="POST" action="{{ route('logout') }}">@csrf<button>⇥ <span>Изход</span></button></form>
+<html lang="{{ str_replace('_','-',app()->getLocale()) }}" data-bs-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="csrf-token" content="{{ csrf_token() }}"><title>{{ $title ?? $nexusAppearance['site_name'].' Control' }}</title><meta name="theme-color" content="#0b0e14">@vite(['resources/css/app.css','resources/js/app.js'])</head>
+<body class="n2-admin" style="--accent:{{ $nexusAppearance['accent'] }};--accent2:{{ $nexusAppearance['accent'] }}">
+@php($adminLinks=[['admin.dashboard','⌂','Табло',route('admin.dashboard')],['admin.news.*','▤','Новини',route('admin.news.index')],['admin.servers.*','◉','Сървъри',route('admin.servers.index')],['admin.users.*','♙','Потребители',route('admin.users.index')],['admin.roles.*','◇','Роли и права',route('admin.roles.index')],['admin.modules.*','▦','Модули',route('admin.modules.index')],['admin.settings.*','⚙','Настройки',route('admin.settings.edit')]])
+<aside class="n2-admin-sidebar">
+    <a class="n2-brand" href="{{ route('admin.dashboard') }}"><span>N</span><div><b>{{ strtoupper($nexusAppearance['site_name']) }}</b><small>CONTROL CENTER</small></div></a>
+    <small class="n2-admin-label">WORKSPACE</small><nav>@foreach($adminLinks as $item)<a class="{{ request()->routeIs($item[0])?'active':'' }}" href="{{ $item[3] }}"><i>{{ $item[1] }}</i><span>{{ $item[2] }}</span></a>@endforeach</nav>
+    <div class="n2-sidebar-footer"><a href="{{ route('home') }}">↗ <span>Към сайта</span></a><form method="POST" action="{{ route('logout') }}">@csrf<button>⇥ <span>Изход</span></button></form></div>
 </aside>
-<main class="admin-main"><header class="admin-top"><div><small>{{ $nexusAppearance['site_name'] }} / CONTROL</small><h1>{{ $heading ?? 'Контролен център' }}</h1></div><div class="admin-user"><span>{{ strtoupper(mb_substr(auth()->user()->name,0,1)) }}</span><div><b>{{ auth()->user()->name }}</b><small>{{ auth()->user()->role }}</small></div></div></header><div class="admin-content">@if(session('success'))<div class="flash">✓ {{ session('success') }}</div>@endif{{ $slot }}</div></main>
+<header class="n2-admin-mobilebar"><button type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileNav">☰</button><a class="n2-brand" href="{{ route('admin.dashboard') }}"><span>N</span><div><b>NEXUS</b><small>CONTROL</small></div></a><div>{{ strtoupper(mb_substr(auth()->user()->name,0,1)) }}</div></header>
+<div class="offcanvas offcanvas-start n2-admin-offcanvas" id="adminMobileNav"><div class="offcanvas-header"><b>CONTROL CENTER</b><button class="btn-close" data-bs-dismiss="offcanvas"></button></div><div class="offcanvas-body"><nav>@foreach($adminLinks as $item)<a class="{{ request()->routeIs($item[0])?'active':'' }}" href="{{ $item[3] }}"><i>{{ $item[1] }}</i><span>{{ $item[2] }}</span></a>@endforeach</nav><a href="{{ route('home') }}">Към сайта →</a></div></div>
+<main class="n2-admin-main"><header class="n2-admin-top"><div><small>{{ strtoupper($nexusAppearance['site_name']) }} / ADMINISTRATION</small><h1>{{ $heading ?? 'Контролен център' }}</h1></div><div class="n2-admin-user"><span>{{ strtoupper(mb_substr(auth()->user()->name,0,1)) }}</span><div><b>{{ auth()->user()->name }}</b><small>{{ strtoupper(auth()->user()->role) }}</small></div></div></header><div class="n2-admin-content">@if(session('success'))<div class="alert n2-alert-success">✓ {{ session('success') }}</div>@endif{{ $slot }}</div></main>
 </body></html>

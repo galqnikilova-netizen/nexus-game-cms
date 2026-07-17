@@ -25,6 +25,8 @@
 @import './content-cms.css';
 @import './mobile-navigation-v3.css';
 @import './home-news.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import './nexus-v2.css';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../views/**/*.blade.php';
 
