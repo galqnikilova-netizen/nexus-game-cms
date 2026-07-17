@@ -1,5 +1,24 @@
 import './bootstrap';
 
+const sidebar = document.querySelector('#neo-sidebar');
+const savedSidebar = localStorage.getItem('sidebarOpened');
+if (sidebar && savedSidebar === 'true' && window.innerWidth > 900) sidebar.classList.add('opened');
+document.querySelector('[data-sidebar-toggle]')?.addEventListener('click', () => {
+    sidebar?.classList.toggle('opened');
+    localStorage.setItem('sidebarOpened', String(sidebar?.classList.contains('opened')));
+});
+
+const headerMenu = document.querySelector('.nav_header_menu');
+document.querySelectorAll('[data-header-menu]').forEach((button) => button.addEventListener('click', () => {
+    const open = !headerMenu?.classList.contains('opened');
+    headerMenu?.classList.toggle('opened', open);
+    document.querySelector('.header_burger')?.classList.toggle('active', open);
+}));
+headerMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+    headerMenu.classList.remove('opened');
+    document.querySelector('.header_burger')?.classList.remove('active');
+}));
+
 const n3Menu = document.querySelector('#n3-menu');
 const toggleN3Menu = (open) => {
     if (!n3Menu) return;
