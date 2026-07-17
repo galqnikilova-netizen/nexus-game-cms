@@ -1,7 +1,7 @@
 /* NEXUS Laravel adapter for the captured Neo Remastered design system. */
 @font-face {
     font-family: "Unbounded";
-    src: url("/storage/assets/fonts/vendors/unb/Unbounded-Regular.woff2") format("woff2");
+    src: url("/vendor/neo3/fonts/Unbounded-Regular.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -9,7 +9,7 @@
 
 @font-face {
     font-family: "Unbounded";
-    src: url("/storage/assets/fonts/vendors/unb/Unbounded-Medium.woff2") format("woff2");
+    src: url("/vendor/neo3/fonts/Unbounded-Medium.woff2") format("woff2");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -17,7 +17,7 @@
 
 @font-face {
     font-family: "Unbounded";
-    src: url("/storage/assets/fonts/vendors/unb/Unbounded-Bold.woff2") format("woff2");
+    src: url("/vendor/neo3/fonts/Unbounded-Bold.woff2") format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -25,7 +25,7 @@
 
 @font-face {
     font-family: "SF Pro Display";
-    src: url("/storage/assets/fonts/vendors/sfpro/SFProDisplay-Regular.woff2") format("woff2");
+    src: url("/vendor/neo3/fonts/SFProDisplay-Regular.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -33,7 +33,7 @@
 
 @font-face {
     font-family: "SF Pro Display";
-    src: url("/storage/assets/fonts/vendors/sfpro/SFProDisplay-Medium.woff2") format("woff2");
+    src: url("/vendor/neo3/fonts/SFProDisplay-Medium.woff2") format("woff2");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -41,7 +41,7 @@
 
 @font-face {
     font-family: "SF Pro Display";
-    src: url("/storage/assets/fonts/vendors/sfpro/SFProDisplay-Bold.woff2") format("woff2");
+    src: url("/vendor/neo3/fonts/SFProDisplay-Bold.woff2") format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
