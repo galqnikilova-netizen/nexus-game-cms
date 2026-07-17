@@ -164,3 +164,30 @@ textarea {
         padding-right: 14px;
     }
 }
+
+/* Dynamic Laravel content inside the original Neo 3 module geometry. */
+.neo3-native-home { padding: 18px 0 46px; }
+.neo3-native-home .row { margin-bottom: 18px; }
+.neo3-native-home .mods__card { overflow: hidden; }
+.neo3-native-home .mods__first-image { width: 100%; height: 100%; object-fit: cover; }
+.neo3-native-home .mods__button-search { text-decoration: none; }
+.neo3-news-slider { display: grid; gap: 10px; }
+.neo3-news-slider .image-slider__slide { display: block; min-height: 172px; }
+.neo3-news-slider .image-slider__image { min-height: 172px; }
+.neo3-news-slider .image-slider__image > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: .42; }
+.neo3-news-slider .image-slider__image > p,
+.neo3-news-slider .image-slider__image > h3,
+.neo3-news-slider .image-slider__image > .swiper_btn { position: relative; z-index: 2; }
+.neo3-network-list { display: grid; gap: 12px; padding-top: 14px; }
+.neo3-network-list span { display: flex; justify-content: space-between; gap: 16px; color: var(--text-secondary); }
+.neo3-network-list b { color: var(--text-default); }
+.neo3-statistics-row .statistics_icon svg { width: 24px; height: 24px; fill: currentColor; }
+
+@media (max-width: 767px) {
+    .neo3-native-home { padding-top: 8px; }
+    .neo3-native-home .mods__wrapper { display: grid; grid-template-columns: 1fr; }
+    .neo3-native-home .info-block__wrapper { display: grid; grid-template-columns: 1fr; }
+    .neo3-news-row { display: grid; grid-template-columns: 1fr; }
+    .neo3-statistics-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .neo3-statistics-row .col-md-2 { width: auto; }
+}

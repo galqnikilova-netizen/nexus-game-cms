@@ -1,12 +1,116 @@
 <x-layouts.app title="{{ $nexusAppearance['site_name'] }}">
-@php($totalPlayers=$servers->sum('players_online')) @php($totalSlots=max(1,$servers->sum('players_max'))) @php($onlineServers=$servers->where('status','online')->count())
-<div class="n3-content"><div class="n3-wrap">
-    <section><div class="n3-heading"><div><span class="n3-eyebrow">{{ app()->getLocale()==='bg'?'Мрежа в реално време':'Live network' }}</span><h1>{{ app()->getLocale()==='bg'?'Избери своя режим':'Choose your mode' }}</h1></div><div class="n3-tabs"><button class="n3-tab active">{{ app()->getLocale()==='bg'?'Сървъри':'Servers' }}</button><button class="n3-tab">{{ app()->getLocale()==='bg'?'Последни наказания':'Latest bans' }}</button><button class="n3-tab">{{ app()->getLocale()==='bg'?'Нови играчи':'New players' }}</button></div></div>
-        <div class="n3-modes">@forelse($servers as $server)<article class="n3-mode" style="background-image:url('{{ $server->mapArtwork() }}')"><div class="n3-mode-top"><span class="n3-game">{{ strtoupper($server->game) }}</span><span class="n3-state {{ $server->status==='online'?'online':'offline' }}">{{ $server->status }}</span></div><div class="n3-mode-body"><h3>{{ $server->name }}</h3><div class="n3-mode-meta"><span>{{ $server->current_map?:'Awaiting query' }}</span><span>{{ $server->latency_ms?$server->latency_ms.' ms':'—' }}</span><span class="n3-count">{{ $server->players_online }}<small>/{{ $server->players_max }}</small></span></div></div><a class="absolute inset-0" href="steam://connect/{{ $server->host }}:{{ $server->port }}"></a></article>@empty @foreach(['PUBLIC','AWP ONLY','RETAKE','DEATHMATCH'] as $mode)<article class="n3-mode" style="background-image:url('{{ asset('images/maps/'.(['dust','mirage','inferno','nuke'][$loop->index]).'.svg') }}')"><div class="n3-mode-top"><span class="n3-game">CS2</span><span class="n3-state offline">offline</span></div><div class="n3-mode-body"><h3>{{ $mode }}</h3><div class="n3-mode-meta"><span>Awaiting setup</span><span class="n3-count">0<small>/0</small></span></div></div></article>@endforeach @endforelse</div>
-    </section>
-    <section class="n3-section n3-promos"><a class="n3-promo" href="{{ route('community.index') }}" style="--glow:#1f9fd066"><b>{{ app()->getLocale()==='bg'?'Присъедини се към Telegram':'Join our Telegram' }}</b><small>{{ app()->getLocale()==='bg'?'Новини и връзка с екипа':'News and direct support' }}</small><i class="n3-promo-mark">T</i></a><a class="n3-promo" href="{{ route('community.index') }}" style="--glow:#e42d3f55"><b>{{ app()->getLocale()==='bg'?'Нашият YouTube канал':'Our YouTube channel' }}</b><small>{{ app()->getLocale()==='bg'?'Клипове, стриймове и събития':'Videos, streams and events' }}</small><i class="n3-promo-mark">▶</i></a><a class="n3-promo" href="{{ route('shop.index') }}" style="--glow:#8059dd55"><b>{{ app()->getLocale()==='bg'?'Премиум услуги':'Premium services' }}</b><small>{{ app()->getLocale()==='bg'?'VIP и специални възможности':'VIP and special features' }}</small><i class="n3-promo-mark">VIP</i></a></section>
-    <section class="n3-section n3-home-grid"><div class="n3-panel"><header class="n3-panel-head"><div><span class="n3-eyebrow">Community feed</span><h2>{{ app()->getLocale()==='bg'?'Последни новини':'Latest news' }}</h2></div><a href="{{ route('news.index') }}">{{ app()->getLocale()==='bg'?'Всички новини':'View all' }} →</a></header>@forelse($posts as $post)<a class="n3-news" href="{{ route('news.show',$post) }}"><span class="n3-news-image" @if($post->imageUrl()) style="background-image:url('{{ $post->imageUrl() }}')" @endif></span><span><small class="n3-eyebrow">{{ $post->category }} · {{ $post->published_at->format('d.m.Y') }}</small><h3>{{ $post->title }}</h3><p>{{ $post->excerpt }}</p></span><i class="n3-arrow">→</i></a>@empty<div class="p-14 text-center text-xs text-slate-500">{{ app()->getLocale()==='bg'?'Все още няма публикувани новини.':'No news published yet.' }}</div>@endforelse</div>
-        <aside class="n3-stat-stack"><section class="n3-panel n3-stat"><h3>{{ app()->getLocale()==='bg'?'Статус на мрежата':'Network status' }}</h3><div class="n3-stat-row"><span>{{ app()->getLocale()==='bg'?'Активни сървъри':'Active servers' }}</span><b>{{ $onlineServers }}/{{ $servers->count() }}</b></div><div class="n3-stat-row"><span>{{ app()->getLocale()==='bg'?'Заетост':'Occupancy' }}</span><b>{{ round(($totalPlayers/$totalSlots)*100) }}%</b></div><div class="n3-stat-row"><span>{{ app()->getLocale()==='bg'?'Играчи онлайн':'Players online' }}</span><b>{{ $totalPlayers }}</b></div></section><section class="n3-panel n3-stat"><h3>{{ app()->getLocale()==='bg'?'Твоят профил':'Your profile' }}</h3><div class="n3-stat-row"><span>Steam</span><b>{{ auth()->check()?'✓':'—' }}</b></div><div class="n3-stat-row"><span>{{ app()->getLocale()==='bg'?'Акаунт':'Account' }}</span><a href="{{ auth()->check()?route('profile.show',auth()->user()):route('login') }}">{{ auth()->check()?auth()->user()->name:(app()->getLocale()==='bg'?'Вход':'Sign in') }} →</a></div></section></aside>
-    </section>
-</div></div>
+@php
+    $totalPlayers = $servers->sum('players_online');
+    $totalSlots = max(1, $servers->sum('players_max'));
+    $onlineServers = $servers->where('status', 'online')->count();
+@endphp
+
+<div class="neo3-native-home">
+    <div class="row" id="rowModsServers">
+        <div class="col-md-12">
+            <div class="mods__wrapper mods__row-5 mods__centered">
+                @forelse($servers as $server)
+                    <article class="mods__card" data-mod="{{ strtoupper($server->game) }}">
+                        <div class="mods__servers-counter">
+                            <x-nx-icon name="servers" />
+                            <span class="mods__servers-count">1</span>
+                        </div>
+                        <div class="mods__info">
+                            <div class="mods__title">{{ strtoupper($server->game) }}</div>
+                            <div class="mods__online">
+                                <i class="ring-online"></i>
+                                <span>{{ $server->players_online }}</span>
+                                {{ app()->getLocale()==='bg' ? 'в игра' : 'in game' }}
+                            </div>
+                        </div>
+                        <img class="mods__first-image" src="{{ $server->mapArtwork() }}" alt="{{ $server->current_map }}">
+                        <div class="mods__shadow"></div>
+                        <div class="mod__bottom-info">
+                            <div class="mod__desc-text">{{ $server->name }}</div>
+                            <a class="mods__button-search active filter" href="steam://connect/{{ $server->host }}:{{ $server->port }}">
+                                <span>▶</span>
+                                {{ app()->getLocale()==='bg' ? 'Бърза игра' : 'Quick play' }}
+                            </a>
+                        </div>
+                    </article>
+                @empty
+                    @foreach(['PUBLIC','AWP','RETAKE','DEATHMATCH'] as $mode)
+                        <article class="mods__card">
+                            <div class="mods__servers-counter"><x-nx-icon name="servers"/><span class="mods__servers-count">0</span></div>
+                            <div class="mods__info"><div class="mods__title">{{ $mode }}</div><div class="mods__online"><i class="ring-online"></i>0 {{ app()->getLocale()==='bg'?'в игра':'in game' }}</div></div>
+                            <img class="mods__first-image" src="{{ asset('images/maps/default.svg') }}" alt="">
+                            <div class="mods__shadow"></div>
+                            <div class="mod__bottom-info"><div class="mod__desc-text">{{ app()->getLocale()==='bg'?'Очаква настройка на сървър':'Awaiting server setup' }}</div></div>
+                        </article>
+                    @endforeach
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="info-block__wrapper-global">
+                <div class="info-block__wrapper">
+                    <a href="{{ route('community.index') }}" class="info-block__card" style="background-image:linear-gradient(to right,#2aabee,#135c7e)">
+                        <h3 class="info-block__title">{{ app()->getLocale()==='bg'?'Присъедини се към Telegram':'Join our Telegram' }}</h3>
+                        <span class="info-block__description">{{ app()->getLocale()==='bg'?'Новини и директна връзка с екипа':'News and direct team support' }}</span>
+                        <img class="info-block__image" src="{{ asset('vendor/neo3/app/modules/module_block_main_advert/assets/img/telegram icon.png') }}" alt="">
+                    </a>
+                    <a href="{{ route('news.index') }}" class="info-block__card" style="background-image:linear-gradient(to right,#35191c,#7e2028)">
+                        <h3 class="info-block__title">{{ app()->getLocale()==='bg'?'Последни новини':'Latest news' }}</h3>
+                        <span class="info-block__description">{{ app()->getLocale()==='bg'?'Следи развитието на общността':'Follow the community updates' }}</span>
+                        <img class="info-block__image" src="{{ asset('vendor/neo3/app/modules/module_block_main_advert/assets/img/youtube icon.png') }}" alt="">
+                    </a>
+                    <a href="{{ route('shop.index') }}" class="info-block__card" style="background-image:linear-gradient(to right,#171717,#292827)">
+                        <h3 class="info-block__title">{{ app()->getLocale()==='bg'?'Премиум услуги':'Premium services' }}</h3>
+                        <span class="info-block__description">{{ app()->getLocale()==='bg'?'VIP и специални възможности':'VIP and special features' }}</span>
+                        <img class="info-block__image" src="{{ asset('vendor/neo3/app/modules/module_block_main_advert/assets/img/tiktok icon.png') }}" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row neo3-news-row">
+        <div class="col-md-9">
+            <div class="image-slider neo3-news-slider">
+                @forelse($posts as $post)
+                    <a class="image-slider__slide" href="{{ route('news.show',$post) }}">
+                        <div class="image-slider__image">
+                            <p>{{ $post->category }} · {{ $post->published_at->format('d.m.Y') }}</p>
+                            <h3>{{ $post->title }}</h3>
+                            <span class="swiper_btn">{{ app()->getLocale()==='bg'?'Прочети':'Read more' }} →</span>
+                            @if($post->imageUrl())<img src="{{ $post->imageUrl() }}" alt="">@endif
+                        </div>
+                    </a>
+                @empty
+                    <div class="image-slider__slide"><div class="image-slider__image"><p>NEWS</p><h3>{{ app()->getLocale()==='bg'?'Очаквайте новини':'News coming soon' }}</h3></div></div>
+                @endforelse
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card lk-top__card">
+                <div class="lk-top__wrapper">
+                    <h4 class="lk-top__title"><x-nx-icon name="community"/><span>{{ app()->getLocale()==='bg'?'Мрежа в реално време':'Live network' }}</span></h4>
+                    <div class="lk-top__buttons"><a class="filter lk-top__chips-btn active" href="{{ route('servers.index') }}">{{ app()->getLocale()==='bg'?'Сървъри':'Servers' }}</a><a class="filter lk-top__chips-btn" href="{{ route('leaderboard.index') }}">TOP</a></div>
+                    <div class="lk-top__content-wrapper"><div class="lk-top__content neo3-network-list"><span>{{ app()->getLocale()==='bg'?'Онлайн сървъри':'Online servers' }} <b>{{ $onlineServers }}/{{ $servers->count() }}</b></span><span>{{ app()->getLocale()==='bg'?'Играчи онлайн':'Players online' }} <b>{{ $totalPlayers }}</b></span><span>{{ app()->getLocale()==='bg'?'Заетост':'Occupancy' }} <b>{{ round(($totalPlayers/$totalSlots)*100) }}%</b></span></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row neo3-statistics-row">
+        @foreach([
+            [app()->getLocale()==='bg'?'Играчи онлайн':'Players online',$totalPlayers,'community'],
+            [app()->getLocale()==='bg'?'Активни сървъри':'Active servers',$onlineServers,'servers'],
+            [app()->getLocale()==='bg'?'Слотове':'Total slots',$servers->sum('players_max'),'dashboard'],
+            [app()->getLocale()==='bg'?'Новини':'News',$posts->count(),'news'],
+            [app()->getLocale()==='bg'?'Заетост':'Occupancy',round(($totalPlayers/$totalSlots)*100).'%', 'leaderboard'],
+            [app()->getLocale()==='bg'?'Услуги':'Services','VIP','shop']
+        ] as [$label,$value,$icon])
+            <div class="col-md-2"><div class="statistics_container"><div class="statistics_name">{{ $label }}</div><div class="statistics_number">{{ $value }}</div><div class="statistics_icon"><x-nx-icon :name="$icon"/></div></div></div>
+        @endforeach
+    </div>
+</div>
 </x-layouts.app>
