@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.neo3')
 @section('title', 'Admin Dashboard — NEXUS')
 @section('content')
 @include('partials.page-header', ['eyebrow'=>'CONTROL CENTER','title'=>'Admin Dashboard','description'=>'Централен контрол над проекта, сървърите и общността.'])
