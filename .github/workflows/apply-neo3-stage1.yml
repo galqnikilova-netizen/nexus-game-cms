@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - '.bootstrap/neo3-stage1.b64'
+      - '.bootstrap/**'
   workflow_dispatch:
 
 permissions:
