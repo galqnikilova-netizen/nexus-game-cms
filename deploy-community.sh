@@ -7,6 +7,7 @@ APP="${ROOT}/public_html"
 OWNER="commu1994"
 GROUP="commu1994"
 BACKUPS="${ROOT}/backups"
+REPOSITORY="https://github.com/galqnikilova-netizen/nexus-game-cms.git"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
 fail(){ echo "[ERROR] $*" >&2; exit 1; }
@@ -30,10 +31,21 @@ fi
 echo "=== Updating project from GitHub main ==="
 cd "${APP}"
 git config --global --add safe.directory "${APP}" 2>/dev/null || true
-[[ -d .git ]] || fail "${APP} is not a Git repository."
+
+if [[ ! -d .git ]]; then
+  echo "=== Initializing Git metadata in existing production directory ==="
+  git init
+  git remote add origin "${REPOSITORY}"
+else
+  if git remote get-url origin >/dev/null 2>&1; then
+    git remote set-url origin "${REPOSITORY}"
+  else
+    git remote add origin "${REPOSITORY}"
+  fi
+fi
+
 git fetch --prune origin main
 git reset --hard origin/main
-git clean -fd -e .env -e database/database.sqlite -e storage
 
 [[ -f public/assets/css/neo3-exact-core.css ]] || fail "neo3-exact-core.css is missing after update."
 [[ -f public/assets/css/neo3-exact-home.css ]] || fail "neo3-exact-home.css is missing after update."
