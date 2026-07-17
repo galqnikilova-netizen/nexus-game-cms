@@ -1,1 +1,41 @@
-<!doctype html><html lang="{{ str_replace('_','-',app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="csrf-token" content="{{ csrf_token() }}"><title>{{ $title ?? 'NEXUS Control' }}</title>@vite(['resources/css/app.css','resources/js/app.js'])</head><body style="--accent:{{ $nexusAppearance['accent'] }}" class="min-h-screen bg-ink-950 text-slate-100">@php($links=[['admin.dashboard','Dashboard',route('admin.dashboard')],['admin.news.*','News',route('admin.news.index')],['admin.servers.*','Servers',route('admin.servers.index')],['admin.users.*','Users',route('admin.users.index')],['admin.roles.*','Roles',route('admin.roles.index')],['admin.modules.*','Modules',route('admin.modules.index')],['admin.settings.*','Settings',route('admin.settings.edit')]])<aside class="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/8 bg-ink-900 p-4 lg:flex"><a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 border-b border-white/8 px-2 pb-5"><span class="grid h-10 w-10 place-items-center rounded-xl bg-[var(--accent)] font-black text-black">N</span><span><b class="block tracking-[.18em]">NEXUS</b><small class="text-[7px] tracking-widest text-slate-500">CONTROL CENTER</small></span></a><small class="mb-2 mt-6 px-3 text-[8px] font-black tracking-[.2em] text-slate-600">WORKSPACE</small><nav class="grid gap-1">@foreach($links as $item)<a href="{{ $item[2] }}" class="flex min-h-11 items-center rounded-xl px-3 text-xs font-bold {{ request()->routeIs($item[0])?'bg-white/8 text-white shadow-[inset_3px_0_var(--accent)]':'text-slate-500 hover:bg-white/4 hover:text-white' }}"><span class="mr-3 w-5 text-[10px] text-[var(--accent)]">{{ str_pad($loop->iteration,2,'0',STR_PAD_LEFT) }}</span>{{ $item[1] }}</a>@endforeach</nav><div class="mt-auto grid gap-2 border-t border-white/8 pt-4"><a class="nx-button-muted" href="{{ route('home') }}">View site</a><form method="POST" action="{{ route('logout') }}">@csrf<button class="nx-button-muted w-full">Log out</button></form></div></aside><header class="fixed inset-x-0 top-0 z-30 flex h-16 items-center justify-between border-b border-white/8 bg-ink-900 px-4 lg:hidden"><button id="nx-admin-menu-open" class="grid h-10 w-10 place-items-center rounded-xl border border-white/10">☰</button><b class="tracking-[.18em]">NEXUS CONTROL</b><span class="grid h-9 w-9 place-items-center rounded-xl bg-[var(--accent)] font-black text-black">{{ mb_substr(auth()->user()->name,0,1) }}</span></header><div id="nx-admin-menu" class="pointer-events-none fixed inset-0 z-50 opacity-0 lg:hidden"><button data-nx-admin-close class="absolute inset-0 bg-black/80"></button><aside class="absolute left-0 top-0 flex h-full w-72 -translate-x-full flex-col bg-ink-900 p-4 transition"><div class="flex items-center justify-between border-b border-white/8 pb-4"><b>NEXUS CONTROL</b><button data-nx-admin-close class="h-10 w-10 rounded-xl border border-white/10">×</button></div><nav class="mt-4 grid gap-1">@foreach($links as $item)<a href="{{ $item[2] }}" class="rounded-xl px-4 py-3 text-xs font-bold {{ request()->routeIs($item[0])?'bg-white/8 text-white':'text-slate-400' }}">{{ $item[1] }}</a>@endforeach</nav></aside></div><main class="min-h-screen pt-16 lg:ml-64 lg:pt-0"><header class="flex min-h-24 items-center justify-between border-b border-white/8 px-4 sm:px-8"><div><small class="text-[8px] font-bold tracking-[.2em] text-slate-600">NEXUS / ADMINISTRATION</small><h1 class="mt-2 text-2xl font-black tracking-tight">{{ $heading ?? 'Control Center' }}</h1></div><div class="hidden items-center gap-3 sm:flex"><span class="grid h-10 w-10 place-items-center rounded-xl bg-[var(--accent)] font-black text-black">{{ mb_substr(auth()->user()->name,0,1) }}</span><div><b class="block text-xs">{{ auth()->user()->name }}</b><small class="text-[8px] text-slate-500">{{ strtoupper(auth()->user()->role) }}</small></div></div></header><div class="p-4 sm:p-8">@if(session('success'))<div class="mb-5 rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-4 text-sm text-emerald-300">✓ {{ session('success') }}</div>@endif{{ $slot }}</div></main></body></html>
+<!doctype html>
+<html lang="{{ str_replace('_','-',app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title ?? 'NEXUS Control' }}</title>@vite(['resources/css/app.css','resources/js/app.js'])
+</head>
+@php
+    $accentHex = ltrim($nexusAppearance['accent'], '#');
+    $accentRgb = strlen($accentHex)===6 ? hexdec(substr($accentHex,0,2)).','.hexdec(substr($accentHex,2,2)).','.hexdec(substr($accentHex,4,2)) : '124,134,255';
+    $links=[
+    ['admin.dashboard','dashboard','Dashboard',route('admin.dashboard')],
+    ['admin.servers.*','servers','Servers',route('admin.servers.index')],
+    ['admin.news.*','news','News',route('admin.news.index')],
+    ['admin.users.*','users','Users',route('admin.users.index')],
+    ['admin.roles.*','roles','Roles',route('admin.roles.index')],
+    ['admin.modules.*','modules','Modules',route('admin.modules.index')],
+    ['admin.settings.*','settings','Settings',route('admin.settings.edit')],
+    ];
+@endphp
+<body style="--nx-accent:{{ $nexusAppearance['accent'] }};--accent:{{ $nexusAppearance['accent'] }};--nx-accent-rgb:{{ $accentRgb }}">
+<div class="nx-admin-shell">
+    <aside class="nx-admin-side">
+        <a class="nx-admin-brand" href="{{ route('admin.dashboard') }}"><span class="nx-logo-mark">N</span><span><strong>NEXUS CONTROL</strong><small>Network administration</small></span></a>
+        <nav class="nx-admin-nav"><span class="nx-admin-nav-label">Workspace</span>@foreach($links as $item)<a class="nx-admin-link {{ request()->routeIs($item[0])?'is-active':'' }}" href="{{ $item[3] }}"><x-nx-icon :name="$item[1]"/>{{ $item[2] }}</a>@endforeach</nav>
+        <div class="mt-auto border-t border-white/[.06] p-3">
+            <a class="nx-admin-link" href="{{ route('home') }}"><x-nx-icon name="external"/>View website</a>
+            <form method="POST" action="{{ route('logout') }}">@csrf<button class="nx-admin-link w-full"><x-nx-icon name="logout"/>Log out</button></form>
+        </div>
+    </aside>
+    <main class="nx-admin-main">
+        <header class="nx-admin-top">
+            <button class="nx-mobile-icon md:hidden" type="button" data-admin-sheet-open><x-nx-icon name="more"/></button>
+            <div><h1>{{ $heading ?? 'Control Center' }}</h1><p>Manage the network, community and platform services</p></div>
+            <div class="ml-auto flex items-center gap-2"><a class="nx-top-action" href="{{ route('locale.switch',app()->getLocale()==='bg'?'en':'bg') }}">{{ strtoupper(app()->getLocale()) }}</a><a class="nx-top-action" href="{{ route('profile.show',auth()->user()) }}">@if(auth()->user()->avatar_url)<img class="nx-avatar" src="{{ auth()->user()->avatar_url }}" alt="">@else<span class="nx-avatar grid place-items-center font-black">{{ mb_substr(auth()->user()->name,0,1) }}</span>@endif<span class="hidden sm:inline">{{ auth()->user()->name }}</span></a></div>
+        </header>
+        <div class="nx-admin-body">@if(session('success'))<div class="nx-card mb-4 border-emerald-500/20 p-4 text-xs text-emerald-300">✓ {{ session('success') }}</div>@endif{{ $slot }}</div>
+    </main>
+    <div class="nx-mobile-sheet" id="nx-admin-menu" aria-hidden="true"><button class="nx-sheet-backdrop" data-admin-sheet-close></button><div class="nx-sheet-panel"><div class="nx-sheet-grid">@foreach($links as $item)<a class="nx-sheet-link" href="{{ $item[3] }}"><x-nx-icon :name="$item[1]"/>{{ $item[2] }}</a>@endforeach<a class="nx-sheet-link" href="{{ route('home') }}"><x-nx-icon name="external"/>Website</a></div></div></div>
+</div>
+</body>
+</html>

@@ -1,1 +1,54 @@
-<x-layouts.app title="{{ $nexusAppearance['site_name'] }}"><section class="overflow-hidden border-b border-white/8 bg-gradient-to-br from-ink-800 via-ink-900 to-ink-950"><div class="nx-shell grid min-h-[520px] items-center gap-10 py-16 lg:grid-cols-[1.1fr_.9fr]"><div><span class="nx-kicker">NEXT GENERATION COMMUNITY</span><h1 class="mt-5 font-display text-5xl font-black uppercase leading-[.9] tracking-[-.05em] sm:text-7xl">Play together.<br><span class="text-[var(--accent)]">Stay connected.</span></h1><p class="mt-6 max-w-xl text-base leading-7 text-slate-400">Сървъри, Steam профили, новини, статистика и community услуги в една чиста платформа.</p><div class="mt-8 flex flex-wrap gap-3"><a class="nx-button" href="{{ route('servers.index') }}">Explore servers</a><a class="nx-button-muted" href="{{ route('community.index') }}">Our community</a></div></div><div class="nx-card overflow-hidden p-3"><div class="rounded-xl border border-white/8 bg-black/20 p-5"><header class="flex items-center justify-between border-b border-white/8 pb-4"><span class="nx-kicker">LIVE NETWORK</span><b class="text-xs">{{ $servers->sum('players_online') }} ONLINE</b></header><div class="mt-3 grid gap-2">@forelse($servers as $server)<a href="{{ route('servers.index') }}" class="flex items-center gap-3 rounded-xl border border-white/7 bg-white/3 p-3 hover:bg-white/6"><span class="h-14 w-20 shrink-0 rounded-lg bg-cover bg-center" style="background-image:url('{{ $server->mapArtwork() }}')"></span><div class="min-w-0"><b class="block truncate text-xs">{{ $server->name }}</b><small class="text-[9px] text-slate-500">{{ $server->current_map ?: 'Awaiting query' }}</small></div><strong class="ml-auto text-sm">{{ $server->players_online }}<small class="text-slate-600">/{{ $server->players_max }}</small></strong></a>@empty<p class="py-12 text-center text-sm text-slate-500">No servers configured.</p>@endforelse</div></div></div></div></section><div class="nx-shell grid gap-6 py-10 lg:grid-cols-[230px_1fr]"><x-public-sidebar/><main><div class="flex items-end justify-between border-b border-white/8 pb-4"><div><span class="nx-kicker">LATEST UPDATES</span><h2 class="nx-title mt-2">Community news</h2></div><a class="text-xs font-bold text-slate-500" href="{{ route('news.index') }}">VIEW ALL →</a></div><div class="mt-5 grid gap-4 md:grid-cols-2">@forelse($posts as $post)<article class="nx-card overflow-hidden"><a href="{{ route('news.show',$post) }}" class="block h-48 bg-gradient-to-br from-slate-700 to-ink-900 bg-cover bg-center" @if($post->imageUrl()) style="background-image:url('{{ $post->imageUrl() }}')" @endif></a><div class="p-5"><small class="nx-kicker">{{ $post->category }} · {{ $post->published_at->format('d.m.Y') }}</small><h3 class="mt-3 text-xl font-black"><a href="{{ route('news.show',$post) }}">{{ $post->title }}</a></h3><p class="mt-3 text-sm leading-6 text-slate-400">{{ $post->excerpt }}</p></div></article>@empty<div class="nx-card col-span-full p-12 text-center text-slate-500">Добави първата новина от контролния панел.</div>@endforelse</div></main></div></x-layouts.app>
+<x-layouts.app title="{{ $nexusAppearance['site_name'] }}">
+@php
+    $totalPlayers = $servers->sum('players_online');
+    $totalSlots = max(1,$servers->sum('players_max'));
+    $onlineServers = $servers->where('status','online')->count();
+@endphp
+<div class="nx-page-pad">
+    <div class="nx-shell">
+        <section>
+            <div class="nx-section-head">
+                <div><span class="nx-kicker">{{ app()->getLocale()==='bg'?'Мрежа в реално време':'Live network' }}</span><h2>{{ app()->getLocale()==='bg'?'Избери своя режим':'Choose your mode' }}</h2></div>
+                <div class="nx-tabs" role="tablist"><button class="nx-tab is-active">{{ app()->getLocale()==='bg'?'Сървъри':'Servers' }}</button><button class="nx-tab">{{ app()->getLocale()==='bg'?'Последни наказания':'Latest bans' }}</button><button class="nx-tab">{{ app()->getLocale()==='bg'?'Нови играчи':'New players' }}</button></div>
+            </div>
+            <div class="nx-server-strip">
+                @forelse($servers as $server)
+                    <article class="nx-mode-card" style="background-image:url('{{ $server->mapArtwork() }}')">
+                        <div class="nx-mode-top"><span class="nx-mode-game">{{ strtoupper($server->game) }}</span><span class="nx-status {{ $server->status==='online'?'is-online':'is-offline' }}">{{ $server->status }}</span></div>
+                        <div class="nx-mode-card-content">
+                            <h3>{{ $server->name }}</h3>
+                            <div class="nx-mode-meta"><span>{{ $server->current_map ?: 'Awaiting query' }}</span><span>{{ $server->latency_ms ? $server->latency_ms.' ms' : '—' }}</span><span class="nx-mode-players">{{ $server->players_online }}<small>/{{ $server->players_max }}</small></span></div>
+                            <a href="steam://connect/{{ $server->host }}:{{ $server->port }}" class="absolute inset-0" aria-label="Connect to {{ $server->name }}"></a>
+                        </div>
+                    </article>
+                @empty
+                    @foreach(['PUBLIC','AWP ONLY','RETAKE','DEATHMATCH'] as $mode)
+                        <article class="nx-mode-card" style="background-image:url('{{ asset('images/maps/'.(['dust','mirage','inferno','nuke'][$loop->index]).'.svg') }}')"><div class="nx-mode-top"><span class="nx-mode-game">CS2</span><span class="nx-status is-offline">offline</span></div><div class="nx-mode-card-content"><h3>{{ $mode }}</h3><div class="nx-mode-meta"><span>{{ app()->getLocale()==='bg'?'Очаква настройка':'Awaiting setup' }}</span><span class="nx-mode-players">0<small>/0</small></span></div></div></article>
+                    @endforeach
+                @endforelse
+            </div>
+        </section>
+
+        <section class="mt-3 nx-promo-grid">
+            <a class="nx-promo" href="{{ route('community.index') }}" style="--promo:rgba(72,151,255,.33)"><b>{{ app()->getLocale()==='bg'?'Присъедини се към Discord':'Join our Discord' }}</b><span>{{ app()->getLocale()==='bg'?'Новини, събития и директна връзка с екипа':'News, events and direct support' }}</span><i class="nx-promo-icon not-italic">D</i></a>
+            <a class="nx-promo" href="{{ route('shop.index') }}" style="--promo:rgba(223,167,71,.27)"><b>{{ app()->getLocale()==='bg'?'VIP и специални услуги':'VIP and premium services' }}</b><span>{{ app()->getLocale()==='bg'?'Подкрепи проекта и отключи повече':'Support the network and unlock more' }}</span><i class="nx-promo-icon not-italic">VIP</i></a>
+            <a class="nx-promo" href="{{ route('servers.index') }}" style="--promo:rgba(var(--nx-accent-rgb),.3)"><b>{{ app()->getLocale()==='bg'?'Бърза игра':'Quick play' }}</b><span>{{ $totalPlayers }} {{ app()->getLocale()==='bg'?'играчи са онлайн':'players online now' }}</span><i class="nx-promo-icon not-italic">→</i></a>
+        </section>
+
+        <section class="mt-3 nx-dashboard-grid">
+            <div class="nx-card nx-news-list">
+                <div class="nx-section-head px-5 pt-5"><div><span class="nx-kicker">Community feed</span><h2>{{ app()->getLocale()==='bg'?'Последни новини':'Latest news' }}</h2></div><a href="{{ route('news.index') }}">{{ app()->getLocale()==='bg'?'Всички новини':'View all' }} →</a></div>
+                @forelse($posts as $post)
+                    <a class="nx-news-row" href="{{ route('news.show',$post) }}"><span class="nx-news-image" @if($post->imageUrl()) style="background-image:url('{{ $post->imageUrl() }}')" @endif></span><span><small class="nx-kicker">{{ $post->category }} · {{ $post->published_at->format('d.m.Y') }}</small><h3>{{ $post->title }}</h3><p>{{ $post->excerpt }}</p></span><i class="nx-row-arrow not-italic">→</i></a>
+                @empty
+                    <div class="px-5 py-14 text-center text-xs text-slate-500">{{ app()->getLocale()==='bg'?'Добави първата новина от контролния център.':'Publish the first update from Control Center.' }}</div>
+                @endforelse
+            </div>
+            <aside class="nx-stat-stack">
+                <section class="nx-card nx-stat-panel"><h3>{{ app()->getLocale()==='bg'?'Статус на мрежата':'Network status' }}</h3><div class="nx-stat-line"><span>{{ app()->getLocale()==='bg'?'Активни сървъри':'Active servers' }}</span><strong>{{ $onlineServers }}/{{ $servers->count() }}</strong></div><div class="nx-stat-line"><span>{{ app()->getLocale()==='bg'?'Играчите заемат':'Player occupancy' }}</span><strong>{{ round(($totalPlayers/$totalSlots)*100) }}%</strong></div><div class="nx-stat-line"><span>{{ app()->getLocale()==='bg'?'Общо онлайн':'Total online' }}</span><strong>{{ $totalPlayers }}</strong></div></section>
+                <section class="nx-card nx-stat-panel"><h3>{{ app()->getLocale()==='bg'?'Твоята общност':'Your community' }}</h3><div class="nx-stat-line"><span>Steam identity</span><strong>{{ auth()->check()?'✓':'—' }}</strong></div><div class="nx-stat-line"><span>{{ app()->getLocale()==='bg'?'Профил':'Profile' }}</span><a class="text-[10px] font-bold text-white" href="{{ auth()->check()?route('profile.show',auth()->user()):route('login') }}">{{ auth()->check()?auth()->user()->name:(app()->getLocale()==='bg'?'Вход':'Sign in') }} →</a></div></section>
+            </aside>
+        </section>
+    </div>
+</div>
+</x-layouts.app>

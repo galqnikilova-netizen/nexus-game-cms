@@ -1,42 +1,69 @@
 import './bootstrap';
 
-const toggleDrawer = (drawer, open) => {
-    if (!drawer) return;
-    const panel = drawer.querySelector('aside');
-    drawer.classList.toggle('pointer-events-none', !open);
-    drawer.classList.toggle('opacity-0', !open);
-    panel?.classList.toggle('translate-x-full', !open && panel.classList.contains('right-0'));
-    panel?.classList.toggle('-translate-x-full', !open && panel.classList.contains('left-0'));
+const setSheet = (sheet, open) => {
+    if (!sheet) return;
+    sheet.classList.toggle('is-open', open);
+    sheet.setAttribute('aria-hidden', String(!open));
     document.body.classList.toggle('overflow-hidden', open);
 };
 
-const mobile = document.querySelector('#nx-mobile-menu');
-document.querySelector('#nx-menu-open')?.addEventListener('click', () => toggleDrawer(mobile, true));
-mobile?.querySelectorAll('[data-nx-menu-close], a').forEach((item) => item.addEventListener('click', () => toggleDrawer(mobile, false)));
+const publicSheet = document.querySelector('#nx-mobile-menu');
+document.querySelector('[data-mobile-sheet-open]')?.addEventListener('click', () => setSheet(publicSheet, true));
+publicSheet?.querySelectorAll('[data-mobile-sheet-close], a').forEach((item) => item.addEventListener('click', () => setSheet(publicSheet, false)));
 
-const adminMobile = document.querySelector('#nx-admin-menu');
-document.querySelector('#nx-admin-menu-open')?.addEventListener('click', () => toggleDrawer(adminMobile, true));
-adminMobile?.querySelectorAll('[data-nx-admin-close], a').forEach((item) => item.addEventListener('click', () => toggleDrawer(adminMobile, false)));
+const adminSheet = document.querySelector('#nx-admin-menu');
+document.querySelector('[data-admin-sheet-open]')?.addEventListener('click', () => setSheet(adminSheet, true));
+adminSheet?.querySelectorAll('[data-admin-sheet-close], a').forEach((item) => item.addEventListener('click', () => setSheet(adminSheet, false)));
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') { toggleDrawer(mobile, false); toggleDrawer(adminMobile, false); }
+    if (event.key === 'Escape') { setSheet(publicSheet, false); setSheet(adminSheet, false); }
 });
 
-const browser = document.querySelector('[data-server-browser]');
-document.querySelectorAll('[data-server-view]').forEach((button, index) => button.addEventListener('click', () => {
-    browser?.children[0]?.classList.toggle('hidden', index === 1);
-    browser?.children[1]?.classList.toggle('hidden', index === 0);
-    document.querySelectorAll('[data-server-view]').forEach((item) => {
-        item.classList.toggle('bg-[var(--accent)]', item === button);
-        item.classList.toggle('text-black', item === button);
-        item.classList.toggle('text-slate-500', item !== button);
-    });
+document.querySelectorAll('[data-copy-server]').forEach((button) => button.addEventListener('click', async (event) => {
+    event.preventDefault();
+    try {
+        await navigator.clipboard.writeText(button.dataset.copyServer);
+        const original = button.textContent;
+        button.textContent = 'COPIED';
+        setTimeout(() => { button.textContent = original; }, 1200);
+    } catch (_) {
+        button.textContent = button.dataset.copyServer;
+    }
 }));
 
-document.querySelectorAll('[data-copy-server]').forEach((button) => button.addEventListener('click', async () => {
-    await navigator.clipboard.writeText(button.dataset.copyServer);
-    button.textContent = 'COPIED'; setTimeout(() => { button.textContent = 'COPY IP'; }, 1200);
+const rows = [...document.querySelectorAll('[data-server-row]')];
+const search = document.querySelector('[data-server-search]');
+let statusFilter = 'all';
+let gameFilter = 'all';
+
+const applyServerFilters = () => {
+    const query = (search?.value || '').trim().toLowerCase();
+    rows.forEach((row) => {
+        const matchesStatus = statusFilter === 'all' || row.dataset.status === statusFilter;
+        const matchesGame = gameFilter === 'all' || row.dataset.game === gameFilter;
+        const matchesSearch = !query || row.dataset.search.includes(query);
+        row.hidden = !(matchesStatus && matchesGame && matchesSearch);
+    });
+};
+
+search?.addEventListener('input', applyServerFilters);
+document.querySelectorAll('[data-server-filter]').forEach((button) => button.addEventListener('click', () => {
+    statusFilter = button.dataset.serverFilter;
+    document.querySelectorAll('[data-server-filter]').forEach((item) => item.classList.toggle('is-active', item === button));
+    applyServerFilters();
+}));
+document.querySelectorAll('[data-server-game]').forEach((button) => button.addEventListener('click', () => {
+    const selected = button.classList.contains('is-active');
+    document.querySelectorAll('[data-server-game]').forEach((item) => item.classList.remove('is-active'));
+    button.classList.toggle('is-active', !selected);
+    gameFilter = selected ? 'all' : button.dataset.serverGame;
+    applyServerFilters();
 }));
 
 const colorInput = document.querySelector('#accent-color');
-colorInput?.addEventListener('input', (event) => document.body.style.setProperty('--accent', event.target.value));
+colorInput?.addEventListener('input', (event) => {
+    document.documentElement.style.setProperty('--nx-accent', event.target.value);
+    document.documentElement.style.setProperty('--accent', event.target.value);
+    const hex = event.target.value.replace('#', '');
+    if (hex.length === 6) document.documentElement.style.setProperty('--nx-accent-rgb', `${parseInt(hex.slice(0,2),16)},${parseInt(hex.slice(2,4),16)},${parseInt(hex.slice(4,6),16)}`);
+});
