@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.neo3')
 @section('title', 'Правила — NEXUS')
 @section('content')
 @include('partials.page-header', ['eyebrow'=>'COMMUNITY GUIDELINES','title'=>'Правила на проекта','description'=>'Ясни правила за честна, спокойна и приятна игра.'])
