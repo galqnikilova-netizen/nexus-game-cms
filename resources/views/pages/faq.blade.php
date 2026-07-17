@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.neo3')
 @section('title', 'FAQ — NEXUS')
 @section('content')
 <section class="center-header"><span class="eyebrow">HELP CENTER</span><h1>Как можем да помогнем?</h1><p>Намери бърз отговор или отвори тикет към екипа.</p><div class="hero-search">@svg('search')<input placeholder="Търси във въпросите..."><button class="button button-primary">Търси</button></div></section>
