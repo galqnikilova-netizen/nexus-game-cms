@@ -1,0 +1,47 @@
+name: Expand NEXUS bootstrap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.bootstrap/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout bootstrap commit
+        uses: actions/checkout@v4
+
+      - name: Validate and expand project
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          parts=(.bootstrap/part-*)
+          if (( ${#parts[@]} == 0 )); then
+            echo "Bootstrap already expanded."
+            exit 0
+          fi
+          cat "${parts[@]}" | base64 --decode > /tmp/nexus-game-cms.tar.gz
+          tar -tzf /tmp/nexus-game-cms.tar.gz >/dev/null
+          tar -xzf /tmp/nexus-game-cms.tar.gz
+          rm -rf .bootstrap
+
+      - name: Commit expanded Laravel source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git commit -m "feat: build NEXUS Game CMS Sprint 1"
+          git push
