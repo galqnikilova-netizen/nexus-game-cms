@@ -4,27 +4,42 @@ Modern self-hosted gaming community CMS built on Laravel 12.
 
 ## Neo3 exact-theme migration
 
-The uploaded Neo3 reference archive is the visual source of truth for the project. The migration is intentionally delivered in stages so every public and administrative screen can retain the same component structure, spacing, breakpoints and responsive behavior.
+The uploaded Neo3 reference archive is the visual source of truth for the project. The migration is intentionally delivered in stages so every public and administrative screen retains the same component structure, spacing, breakpoints and responsive behavior.
 
-### Stage 1 — exact public shell and homepage
+### Stage 1 — public shell and homepage
 
 - original Neo3 global CSS and page-module CSS integrated locally
-- exact Neo3 sidebar structure and collapse behavior
-- exact Neo3 navbar, player search, balance/language controls and Steam login button
-- exact mobile tabbar and footer structure
-- exact homepage component families: extended activity feed, mode cards, filters, server cards, social banners, slider, donor panel, statistics and reward feed
-- NEXUS branding and Bulgarian content mapped onto the original component system
+- Neo3 sidebar structure and collapse behavior
+- Neo3 navbar, player search, balance/language controls and Steam login button
+- mobile tabbar and footer structure
+- homepage component families: activity feed, mode cards, filters, server cards, banners, statistics and reward feed
+- NEXUS branding and Bulgarian content mapped onto the Neo3 component system
 - no bundled third-party font files; safe system fallbacks are used
+
+### Stage 2 — leaderboard and player profile
+
+- leaderboard rebuilt from the uploaded `leaderboard.html` structure
+- original top-three medal presentation and leaderboard module class system
+- sticky information/filter card, server filter, sorting and online-only filtering
+- clickable player rows with Steam-ID profile resolution
+- Neo3 player profile shell with overview, matches, weapons and achievements tabs
+- responsive table and mobile profile navigation
+
+### Stage 3 — store and checkout presentation
+
+- store rebuilt from the uploaded `store.html` class structure
+- Neo3 product cards, period selector, benefits list, category/server filters and price sorting
+- client-side basket with totals, Steam-ID field and checkout modal
+- responsive two-column/tablet and single-column/mobile presentation
+- real payment gateway submission is intentionally deferred to the backend integration stage
 
 ### Following stages
 
-1. Leaderboard and player profile
-2. Store and payment flows
-3. Punishments and CSBans views
-4. Skinchanger
-5. FAQ, rules and tickets
-6. Authentication and account area
-7. Administration and installer/update system
+1. Punishments and CSBans views
+2. Skinchanger
+3. FAQ, rules and tickets
+4. Authentication and account area
+5. Administration and installer/update system
 
 ## Requirements
 
@@ -46,4 +61,4 @@ Open `http://127.0.0.1:8000`.
 
 ## Current baseline
 
-`NEXUS_NEO3_EXACT_STAGE1`
+`NEXUS_NEO3_EXACT_STAGE3`
