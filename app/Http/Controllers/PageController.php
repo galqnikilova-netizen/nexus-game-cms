@@ -16,4 +16,6 @@ class PageController extends Controller
     {
         return view('shop');
     }
+
+    public function about(): View { return view('about'); }
 }

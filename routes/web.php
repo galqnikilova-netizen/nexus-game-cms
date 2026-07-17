@@ -14,6 +14,8 @@ use App\Http\Controllers\BanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SteamAuthController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Admin\NewsPostController as AdminNewsPostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/locale/{locale}', function (string $locale) {
@@ -31,6 +33,9 @@ Route::get('/servers', [ServerController::class, 'index'])->name('servers.index'
 Route::get('/bans', [BanController::class, 'index'])->name('bans.index');
 Route::get('/community', [PageController::class, 'community'])->name('community.index');
 Route::get('/shop', [PageController::class, 'shop'])->name('shop.index');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::get('/auth/steam', [SteamAuthController::class, 'redirect'])->name('auth.steam');
 Route::get('/auth/steam/callback', [SteamAuthController::class, 'callback'])->middleware('throttle:10,1')->name('auth.steam.callback');
@@ -47,4 +52,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('users', UserController::class)->only(['index','edit','update']);
     Route::resource('roles', RoleController::class)->except(['show']);
+    Route::resource('news', AdminNewsPostController::class)->except(['show']);
 });

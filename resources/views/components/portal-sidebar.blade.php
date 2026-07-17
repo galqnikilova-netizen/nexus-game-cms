@@ -18,9 +18,11 @@
         <nav class="quick-menu">
             <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}"><i>01</i><span><b>Home</b><small>Network overview</small></span></a>
             <a class="{{ request()->routeIs('servers.*') ? 'active' : '' }}" href="{{ route('servers.index') }}"><i>02</i><span><b>Servers</b><small>Live game network</small></span></a>
-            <a class="{{ request()->routeIs('community.*') ? 'active' : '' }}" href="{{ route('community.index') }}"><i>03</i><span><b>Community</b><small>Members & profiles</small></span></a>
-            <a class="{{ request()->routeIs('shop.*') ? 'active' : '' }}" href="{{ route('shop.index') }}"><i>04</i><span><b>VIP Shop</b><small>Services & upgrades</small></span></a>
-            <a class="{{ request()->routeIs('bans.*') ? 'active' : '' }}" href="{{ route('bans.index') }}"><i>05</i><span><b>Ban List</b><small>Security center</small></span></a>
+            <a class="{{ request()->routeIs('news.*') ? 'active' : '' }}" href="{{ route('news.index') }}"><i>03</i><span><b>News</b><small>Updates & articles</small></span></a>
+            <a class="{{ request()->routeIs('community.*') ? 'active' : '' }}" href="{{ route('community.index') }}"><i>04</i><span><b>Community</b><small>Members & profiles</small></span></a>
+            <a class="{{ request()->routeIs('shop.*') ? 'active' : '' }}" href="{{ route('shop.index') }}"><i>05</i><span><b>VIP Shop</b><small>Services & upgrades</small></span></a>
+            <a class="{{ request()->routeIs('bans.*') ? 'active' : '' }}" href="{{ route('bans.index') }}"><i>06</i><span><b>Ban List</b><small>Security center</small></span></a>
+            <a class="{{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}"><i>07</i><span><b>About</b><small>About the network</small></span></a>
         </nav>
     </section>
 

@@ -13,6 +13,7 @@ document.addEventListener('click', (event) => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') mobileMenu?.removeAttribute('open');
 });
+document.querySelector('[data-close-menu]')?.addEventListener('click', () => mobileMenu?.removeAttribute('open'));
 
 const colorInput = document.querySelector('#accent-color');
 const colorOutput = document.querySelector('#accent-output');

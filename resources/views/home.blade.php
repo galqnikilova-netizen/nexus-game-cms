@@ -12,7 +12,11 @@
             </article>
 
             <header class="portal-heading"><div><small>LATEST UPDATES</small><h2>COMMUNITY NEWS</h2></div><a href="{{ route('community.index') }}">VIEW ALL</a></header>
-            <article class="portal-news featured"><div class="news-thumb"><b>NX</b><span>UPDATE</span></div><div><small>17 JUL 2026 · PLATFORM</small><h3>NEXUS community platform is now online</h3><p>Нова собствена основа за gaming общности — сървъри, Steam профили, роли, наказания и магазин в една система.</p><footer><a href="{{ route('community.index') }}">READ MORE →</a><span>0 COMMENTS</span></footer></div></article>
+            @forelse($posts as $post)
+                <article class="portal-news {{ $loop->first ? 'featured' : '' }}">@if($loop->first)<a class="news-thumb home-news-cover" href="{{ route('news.show',$post) }}" @if($post->imageUrl()) style="--news-image:url('{{ $post->imageUrl() }}')" @endif><b>NX</b><span>{{ strtoupper($post->category) }}</span></a>@else<time><b>{{ $post->published_at->format('d') }}</b>{{ strtoupper($post->published_at->format('M')) }}</time>@endif<div><small>{{ $post->published_at->format('d M Y') }} · {{ strtoupper($post->category) }}</small><h3>{{ $post->title }}</h3><p>{{ $post->excerpt }}</p><footer><a href="{{ route('news.show',$post) }}">READ MORE →</a></footer></div></article>
+            @empty
+                <article class="portal-news featured"><div class="news-thumb"><b>NX</b><span>NEWS</span></div><div><small>CONTENT MANAGER</small><h3>Очаквайте първата NEXUS новина</h3><p>Публикациите от контролния панел ще се показват автоматично тук.</p></div></article>
+            @endforelse
 
             <header class="portal-heading"><div><small>LIVE STATUS</small><h2>GAME SERVERS</h2></div><a href="{{ route('servers.index') }}">VIEW ALL SERVERS</a></header>
             <section class="portal-home-servers">

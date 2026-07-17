@@ -1,0 +1,4 @@
+<x-layouts.app title="{{ $news->title }} · NEXUS">
+    <section class="news-detail-hero" @if($news->imageUrl()) style="--news-image:url('{{ $news->imageUrl() }}')" @endif><div class="portal-shell"><div class="portal-breadcrumb"><a href="{{ route('home') }}">HOME</a><span>/</span><a href="{{ route('news.index') }}">NEWS</a></div><small>{{ strtoupper($news->category) }}</small><h1>{{ $news->title }}</h1><p>{{ $news->excerpt }}</p></div></section>
+    <div class="portal-shell portal-page-grid"><x-portal-sidebar /><article class="portal-page-main news-article"><header><span>{{ $news->published_at->format('d.m.Y · H:i') }}</span><b>BY {{ strtoupper($news->author?->name ?? 'NEXUS TEAM') }}</b></header><div>{!! nl2br(e($news->content)) !!}</div><footer><a href="{{ route('news.index') }}">← BACK TO NEWS</a></footer></article></div>
+</x-layouts.app>
