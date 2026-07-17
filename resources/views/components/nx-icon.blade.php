@@ -10,6 +10,7 @@
 @case('more')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="5" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="19" cy="12" r="1" fill="currentColor"/></svg>@break
 @case('user')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>@break
 @case('dashboard')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>@break
+@case('leaderboard')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 20v-7H4v7M14 20V4h-4v16M20 20V9h-4v11"/></svg>@break
 @case('users')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v2M16 5.5a3 3 0 0 1 0 5.5M21 20v-2a5 5 0 0 0-3.4-4.74"/></svg>@break
 @case('roles')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 4.5 6v5c0 4.8 3.1 8 7.5 10 4.4-2 7.5-5.2 7.5-10V6L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>@break
 @case('modules')<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3v4M16 3v4M7 7h10v4a5 5 0 0 1-10 0V7ZM12 16v5"/></svg>@break

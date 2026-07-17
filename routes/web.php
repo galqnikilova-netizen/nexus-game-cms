@@ -15,7 +15,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SteamAuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\Admin\NewsPostController as AdminNewsPostController;
+use App\Http\Controllers\Admin\StoreProductController as AdminStoreProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/locale/{locale}', function (string $locale) {
@@ -30,9 +34,12 @@ Route::post('/install', [InstallController::class, 'store'])->middleware('thrott
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/servers', [ServerController::class, 'index'])->name('servers.index');
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 Route::get('/bans', [BanController::class, 'index'])->name('bans.index');
 Route::get('/community', [PageController::class, 'community'])->name('community.index');
-Route::get('/shop', [PageController::class, 'shop'])->name('shop.index');
+Route::get('/shop', [StoreController::class, 'index'])->name('shop.index');
+Route::post('/shop/{product}/purchase', [StoreController::class, 'purchase'])->middleware('auth')->name('shop.purchase');
+Route::post('/balance', [BalanceController::class, 'store'])->middleware(['auth','throttle:5,1'])->name('balance.store');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
@@ -53,4 +60,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])
     Route::resource('users', UserController::class)->only(['index','edit','update']);
     Route::resource('roles', RoleController::class)->except(['show']);
     Route::resource('news', AdminNewsPostController::class)->except(['show']);
+    Route::resource('products', AdminStoreProductController::class)->except(['show']);
 });

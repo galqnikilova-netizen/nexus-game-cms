@@ -60,6 +60,37 @@ document.querySelectorAll('[data-server-game]').forEach((button) => button.addEv
     applyServerFilters();
 }));
 
+const setModal = (modal, open) => {
+    if (!modal) return;
+    modal.classList.toggle('is-open', open);
+    modal.setAttribute('aria-hidden', String(!open));
+    document.body.classList.toggle('overflow-hidden', open);
+};
+
+const balanceModal = document.querySelector('#balance-modal');
+document.querySelectorAll('[data-balance-open]').forEach((button) => button.addEventListener('click', () => setModal(balanceModal, true)));
+
+const productModal = document.querySelector('#product-modal');
+document.querySelectorAll('[data-product-open]').forEach((button) => button.addEventListener('click', () => {
+    const form = document.querySelector('#purchase-form');
+    if (form) form.action = `/shop/${button.dataset.productId}/purchase`;
+    const title = document.querySelector('#purchase-title');
+    const price = document.querySelector('#purchase-price');
+    if (title) title.textContent = button.dataset.productName;
+    if (price) price.textContent = `${Number(button.dataset.productPrice).toFixed(2)} EUR`;
+    setModal(productModal, true);
+}));
+
+document.querySelectorAll('[data-modal-close]').forEach((button) => button.addEventListener('click', () => {
+    setModal(button.closest('.neo-modal'), false);
+}));
+
+document.querySelectorAll('[data-amount]').forEach((button) => button.addEventListener('click', () => {
+    const input = document.querySelector('#balance-amount');
+    if (input) input.value = button.dataset.amount;
+    document.querySelectorAll('[data-amount]').forEach((item) => item.classList.toggle('is-active', item === button));
+}));
+
 const colorInput = document.querySelector('#accent-color');
 colorInput?.addEventListener('input', (event) => {
     document.documentElement.style.setProperty('--nx-accent', event.target.value);

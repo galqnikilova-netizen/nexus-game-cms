@@ -11,6 +11,7 @@
     ['admin.dashboard','dashboard','Dashboard',route('admin.dashboard')],
     ['admin.servers.*','servers','Servers',route('admin.servers.index')],
     ['admin.news.*','news','News',route('admin.news.index')],
+    ['admin.products.*','shop','Store',route('admin.products.index')],
     ['admin.users.*','users','Users',route('admin.users.index')],
     ['admin.roles.*','roles','Roles',route('admin.roles.index')],
     ['admin.modules.*','modules','Modules',route('admin.modules.index')],

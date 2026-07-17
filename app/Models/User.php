@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -31,6 +32,7 @@ class User extends Authenticatable
         'avatar_url',
         'profile_url',
         'last_login_at',
+        'balance',
     ];
 
     public function isAdmin(): bool
@@ -39,6 +41,9 @@ class User extends Authenticatable
     }
 
     public function nexusRole(): BelongsTo { return $this->belongsTo(Role::class, 'role_id'); }
+    public function playerStats(): HasMany { return $this->hasMany(PlayerStat::class); }
+    public function storeOrders(): HasMany { return $this->hasMany(StoreOrder::class); }
+    public function balanceTransactions(): HasMany { return $this->hasMany(BalanceTransaction::class); }
     public function canNexus(string $permission): bool { return $this->role === 'owner' || $this->nexusRole?->allows($permission) === true; }
 
     /**
@@ -62,6 +67,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
+            'balance' => 'decimal:2',
         ];
     }
 }

@@ -13,8 +13,8 @@
     $accentRgb = strlen($accentHex)===6 ? hexdec(substr($accentHex,0,2)).','.hexdec(substr($accentHex,2,2)).','.hexdec(substr($accentHex,4,2)) : '124,134,255';
     $nav = [
         ['home','home',route('home'),__('ui.nav.home')],
+        ['leaderboard.*','leaderboard',route('leaderboard.index'),app()->getLocale()==='bg'?'Класация':'Leaders'],
         ['servers.*','servers',route('servers.index'),__('ui.nav.servers')],
-        ['community.*','community',route('community.index'),__('ui.nav.community')],
         ['shop.*','shop',route('shop.index'),__('ui.nav.shop')],
         ['bans.*','bans',route('bans.index'),__('ui.nav.bans')],
     ];
@@ -30,7 +30,7 @@
                     <x-nx-icon :name="$item[1]"/><span class="nx-tip">{{ $item[3] }}</span>
                 </a>
             @endforeach
-            <a class="nx-rail-link {{ request()->routeIs('news.*') ? 'is-active' : '' }}" href="{{ route('news.index') }}" aria-label="News"><x-nx-icon name="news"/><span class="nx-tip">News</span></a>
+            <a class="nx-rail-link {{ request()->routeIs('community.*') ? 'is-active' : '' }}" href="{{ route('community.index') }}" aria-label="Community"><x-nx-icon name="community"/><span class="nx-tip">Community</span></a>
         </nav>
         <div class="nx-rail-bottom">
             @auth
@@ -75,6 +75,7 @@
         <div class="nx-sheet-panel"><div class="nx-sheet-grid">
             <a class="nx-sheet-link" href="{{ route('bans.index') }}"><x-nx-icon name="bans"/>Ban list</a>
             <a class="nx-sheet-link" href="{{ route('news.index') }}"><x-nx-icon name="news"/>News</a>
+            <a class="nx-sheet-link" href="{{ route('community.index') }}"><x-nx-icon name="community"/>Community</a>
             <a class="nx-sheet-link" href="{{ route('about') }}"><x-nx-icon name="community"/>About</a>
             @auth
                 <a class="nx-sheet-link" href="{{ route('profile.show',auth()->user()) }}"><x-nx-icon name="user"/>Profile</a>

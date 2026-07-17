@@ -17,7 +17,7 @@ class PublicSiteTest extends TestCase
         $this->get('/')->assertOk()->assertSee('NEXUS Competitive');
         $this->get('/servers')->assertOk()->assertSee('NEXUS Competitive');
         $this->get('/community')->assertOk()->assertSee('Our community')->assertSee('MEMBER DIRECTORY');
-        $this->get('/shop')->assertOk()->assertSee('PRIME VIP')->assertSee('PRODUCT CATALOG');
+        $this->get('/shop')->assertOk()->assertSee('Premium')->assertSee('Premium services');
         $this->get('/bans')->assertOk()->assertSee('Public ban list')->assertSee('SECURITY DATABASE');
         $this->get('/')->assertSee(route('community.index'))->assertSee(route('shop.index'))->assertSee(route('bans.index'));
         $this->get('/')->assertSee('nx-mobile-menu')->assertSee('GAME COMMUNITY');
