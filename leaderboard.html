@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Статистика игроков">
+    <meta property="og:description" content="Статистика игроков">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <title>Лидерборд | EDRAGON</title>
+    <meta property="og:title" content="Лидерборд | EDRAGON">
+    <meta property="og:image" content="//neo3.edragon.ru/storage/cache/img/global/bar_logo.jpg">
+    <meta name="robots" content="index" />
+    <link rel="image_src" href="https://neo3.edragon.ru/storage/cache/img/global/bar_logo.jpg">
+    <meta name="twitter:image" content="//neo3.edragon.ru/storage/cache/img/global/bar_logo.jpg">
+    <meta name="keywords" content="CS2, CS2 сервера, CS2 сервер, Counter-Strike 2, CS2 проекты, лучшие сервера CS2, приватные сервера CS2, CS2 мультиплеер, CS2 Deathmatch, CS2 Retake, CS2 Surf, CS2 Jailbreak, CS2 GunGame, CS2 Zombie Escape, CS2 мини-игры, CS2 соревновательный, CS2 скины, CS2 skinchanger, CS2 скинченджер, CS2 донат, CS2 сервера Россия, CS2 сервера СНГ, CS2 с низким пингом, CS2 кастомные карты, CS2 моды, CS2 античит, CS2 быстрый респавн">
+    <link rel="stylesheet" type="text/css" href="app/templates/neo_remastered/assets/css/iziToast.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="app/templates/neo_remastered/assets/css/search.css%3F1784269331.css">
+    <link rel="stylesheet" type="text/css" href="app/templates/neo_remastered/assets/css/shift-away.css">
+    <link rel="stylesheet" type="text/css"
+        href="app/templates/neo_remastered/assets/css/stars.css%3F1784269331.css">
+                <link rel="stylesheet" type="text/css"
+            href="storage/assets/css/style.css%3F1784269331.css">
+                <link rel="stylesheet" type="text/css"
+            href="app/templates/neo_remastered/assets/css/style.css%3F1784269331.css">
+                    <link rel="stylesheet" type="text/css"
+                href="app/modules/module_page_leaderboard/assets/css/1.css%3F1784269331.css">
+                                            <link rel="stylesheet" type="text/css"
+                    href="app/modules/module_page_pay/assets/css/always.css%3F1784269331.css">
+                                                <link rel="stylesheet" type="text/css"
+                    href="app/modules/module_page_cards/assets/css/always.css%3F1784269331.css">
+                                                <link rel="stylesheet" type="text/css"
+                    href="app/modules/module_page_bonuses/assets/css/always.css%3F1784269331.css">
+                                <style id="include">
+        :root{
+    --stars: #ffffff;
+    --text-custom: #bebebe;
+    --text-secondary: #838383;
+    --text-default: #ffffff;
+    --text-default-invert: #1b1c24;
+    --span: #7e9dff;
+    --span-low: rgba(126, 157, 255, .05);
+    --span-10: rgba(126, 157, 255, .1);
+    --span-middle: rgba(126, 157, 255, .25);
+    --span-half: rgba(126, 157, 255, .5);
+    --money: #f4ca80;
+    --money-bg: rgba(244, 202, 128, .1);
+    --bg: #111111;
+    --card: #171717;
+    --tooltip: #1b1b1b;
+    --bg-modal: rgba(18, 18, 18, .96);
+    --input-form: #1e1e1e;
+    --button: #232323;
+    --button-hover: #2b2b2b;
+    --btn-disabled: #1f1f1f;
+    --grey: #161616;
+    --navbar: rgb(17, 17, 17, .85);
+    --green: #64ce82;
+    --orange: #f6b949;
+    --red: #ff4940;
+    --red-10: rgba(255, 73, 64, .1);
+    --red-20: rgba(255, 73, 64, .2);
+    --t: #cca966;
+    --ct: #66AACC;
+    --top-one: #ffdb5c;
+    --top-two: #bfe0ff;
+    --top-three: #f8a785;
+    --transparent-1-w: rgba(255, 255, 255, .01);
+    --transparent-2-w: rgba(255, 255, 255, .02);
+    --transparent-3-w: rgba(255, 255, 255, .03);
+    --transparent-4-w: rgba(255, 255, 255, .04);
+    --transparent-5-w: rgba(255, 255, 255, .05);
+    --transparent-10-w: rgba(255, 255, 255, .1);
+    --transparent-20-w: rgba(255, 255, 255, .2);
+    --transparent-1-b: rgba(0, 0, 0, .01);
+    --transparent-2-b: rgba(0, 0, 0, .02);
+    --transparent-3-b: rgba(0, 0, 0, .03);
+    --transparent-4-b: rgba(0, 0, 0, .04);
+    --transparent-5-b: rgba(0, 0, 0, .05);
+    --transparent-10-b: rgba(0, 0, 0, .1);
+    --transparent-20-b: rgba(0, 0, 0, .2);
+    --brand-vkontakte-color: #0077FF;
+    --brand-telegram-color: #2AABEE;
+    --brand-youtube-color: #FF0000;
+    --brand-tiktok-color: #ff0050;
+    --brand-discord-color: #5865F2
+}     </style>
+    <script src="storage/assets/js/translations.js%3F1784269331"></script>    <script>
+        var avatar = [],
+            faceit = [],
+            translate = window.TRANSLATIONS || {},
+            lang = 'RU';
+        let domain = '//neo3.edragon.ru/';
+    </script>
+    <script src="storage/assets/js/translator.js%3F1784269331"></script>
+</head>
+
+<body class="sidebar-collapse " >
+            <aside class="sidebar ">
+        <nav class="sidebar__wrapper">
+            <span class="sidebar__header">
+                <span class="sidebar__header-text">
+                    Навигация                </span>
+                <div class="sidebar__toggle">
+                    <svg>
+                        <use href="/resources/img/sprite.svg#single-chevrone-right"></use>
+                    </svg>
+                    <span class="sidebar__slider"></span>
+                </div>
+            </span>
+            <ul class="sidebar__list">
+                                                                                        <li>
+                                <a class="sidebal__item " href="https://neo3.edragon.ru/" >
+                                    <svg><use href="/resources/img/sprite.svg#homepage"></use></svg>                                    <span class="sidebar__item-text">
+                                        Главная                                    </span>
+                                </a>
+                            </li>
+                                                                                                                                    <li>
+                                <a class="sidebal__item active" href="leaderboard.html" >
+                                    <svg><use href="/resources/img/sprite.svg#trophy"></use></svg>                                    <span class="sidebar__item-text">
+                                        Лидеры                                    </span>
+                                </a>
+                            </li>
+                                                                                                                                    <li>
+                                <a class="sidebal__item " href="https://neo3.edragon.ru/checker" >
+                                    <svg><use href="/resources/img/sprite.svg#load-file"></use></svg>                                    <span class="sidebar__item-text">
+                                        Checker                                    </span>
+                                </a>
+                            </li>
+                                                                                                                                    <li>
+                                <a class="sidebal__item " href="https://neo3.edragon.ru/punishment" >
+                                    <svg><use href="/resources/img/sprite.svg#block"></use>                                            </svg>                                    <span class="sidebar__item-text">
+                                        Наказания                                    </span>
+                                </a>
+                            </li>
+                                                                                                                                    <li>
+                                <a class="sidebal__item " href="https://neo3.edragon.ru/faq" >
+                                    <svg><use href="/resources/img/sprite.svg#question"></use></svg>                                    <span class="sidebar__item-text">
+                                        FAQ                                    </span>
+                                </a>
+                            </li>
+                                                                                                                                                                                                    <li>
+                                <a class="sidebal__item sidebar__submenu " role="button" aria-expanded="false">
+                                    <svg viewBox="0 0 24 24"><path d="M24 3.8A3.5 3.5 0 0 0 20.5.3h-17A3.52 3.52 0 0 0 0 3.8v13A4.52 4.52 0 0 0 3.31 21c12.13 2.83 11.39 2.7 11.93 2.7a2.67 2.67 0 0 0 1.76-.59a2.84 2.84 0 0 0 1-2.31v-9.69A4.27 4.27 0 0 0 14.89 7L4.06 4a.75.75 0 0 1 .39-1.45c3.73 1 3.52 1 3.57 1H20.5a.75.75 0 0 1 0 1.5h-5.24a.25.25 0 0 0-.24.22a.25.25 0 0 0 .18.28a5.72 5.72 0 0 1 3 1.91a.25.25 0 0 0 .2.09h2.1a.75.75 0 0 1 0 1.5h-1a.24.24 0 0 0-.2.11a.25.25 0 0 0 0 .22a5.6 5.6 0 0 1 .28 1.73v6.94a.25.25 0 0 0 .25.25h.75A3.5 3.5 0 0 0 24 14.8Zm-8.5 11.5a2 2 0 1 1-2-2a2 2 0 0 1 2 2"></path></svg>                                    <span class="sidebar__item-text">
+                                        Платные                                    </span>
+                                    <svg class="chevron-icon">
+                                        <use href="/resources/img/sprite.svg#chevron-down"></use>
+                                    </svg>
+                                </a>
+                                <ul class="sidebar__sublist">
+                                                                                                                        <li>
+                                                <a class="sidebar__subitem " href="https://neo3.edragon.ru/skinchanger" >
+                                                    <svg><use href="/resources/img/sprite.svg#pistol"></use></svg>                                                    Скинченджер                                                </a>
+                                            </li>
+                                                                                                                                                                <li>
+                                                <a class="sidebar__subitem " href="https://neo3.edragon.ru/tickets" >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve" fill-rule="evenodd" class=""><g><path d="M44.84 4.517A4.696 4.696 0 0 1 49 2c1.95 0 3.7 1.21 4.39 3.037l2.07 5.479c0 .006 0 .012.01.017 0 .004.01.008.01.01l5.48 2.066a4.692 4.692 0 0 1 .81 8.384A28.216 28.216 0 0 1 64 32c0 16.518-14.3 30-32 30-5.38 0-10.46-1.25-14.91-3.451-3.74 1.756-7.85 2.791-11.29 3.38a4.968 4.968 0 0 1-5.16-7.337c1.51-2.692 2.49-5.731 3.13-8.462A28.345 28.345 0 0 1 0 32C0 15.482 14.3 2 32 2c4.57 0 8.91.899 12.84 2.517zM32 28a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-15 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM48.35 6.448c.1-.27.36-.448.65-.448s.55.178.65.448l2.06 5.48c.21.538.52 1.026.93 1.433s.89.722 1.43.925l5.48 2.066c.27.102.45.36.45.648s-.18.546-.45.648l-5.48 2.066c-.54.203-1.02.518-1.43.925s-.72.895-.93 1.433l-2.06 5.48c-.1.27-.36.448-.65.448s-.55-.178-.65-.448l-2.06-5.48c-.21-.538-.52-1.026-.93-1.433s-.89-.722-1.43-.925l-5.48-2.066c-.27-.102-.45-.36-.45-.648s.18-.546.45-.648l5.48-2.066c.54-.203 1.02-.518 1.43-.925s.72-.895.93-1.433l2.06-5.48z"></path></g></svg>                                                    Тикеты                                                </a>
+                                            </li>
+                                                                                                                                                                <li>
+                                                <a class="sidebar__subitem " href="https://neo3.edragon.ru/steamfinder" >
+                                                    <svg><use href="/resources/img/sprite.svg#steam"></use></svg>                                                    Поиск игрока                                                </a>
+                                            </li>
+                                                                                                                                                                <li>
+                                                <a class="sidebar__subitem " href="https://neo3.edragon.ru/store" >
+                                                    <svg><use href="/resources/img/sprite.svg#store-build"></use></svg>                                                    Магазин                                                </a>
+                                            </li>
+                                                                                                                                                                <li>
+                                                <a class="sidebar__subitem " href="https://neo3.edragon.ru/help" >
+                                                    <svg viewBox="0 0 640 512"><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"></path></svg>                                                    Правила                                                </a>
+                                            </li>
+                                                                                                                                                                                        </ul>
+                            </li>
+                                                                                                            </ul>
+        </nav>
+    </aside>
+    <script>
+        if (localStorage.getItem('sidebarOpened') === 'true') {
+            document.querySelector('.sidebar')?.classList.add('opened');
+        }
+    </script>
+<div class="global-container">
+    <div class="container-fluid">
+        <div class="navbar row">
+    <div class="navbar_menu_left">
+        <a class="logo-text" href="https://neo3.edragon.ru/">
+                            <div class="site_logo_neo" data-tippy-content="CS PROJECT NAME" data-tippy-placement="bottom">
+                    <img class="logo" src="storage/cache/img/global/logo.png" alt="">
+                </div>
+                    </a>
+                    <div class="online">
+                <div class="online__counter" id="counter">
+                    <div class="online__square-wrapper"><span class="online__square-figure"></span></div>
+                    <div class="online__count" id="servers_total">11</div>
+                </div>
+                <div class="online__wrapper" id="counterWrapper">
+                                            <div class="online__item">
+                            <svg>
+                                <use href="/resources/img/sprite.svg#gamepad"></use>
+                            </svg>
+                            <div class="online__item-server-name">SANDSTONE:</div><span
+                                id="mod_SANDSTONE">11</span>
+                        </div>
+                                            <div class="online__item">
+                            <svg>
+                                <use href="/resources/img/sprite.svg#gamepad"></use>
+                            </svg>
+                            <div class="online__item-server-name">AWP:</div><span
+                                id="mod_AWP">0</span>
+                        </div>
+                                            <div class="online__item">
+                            <svg>
+                                <use href="/resources/img/sprite.svg#gamepad"></use>
+                            </svg>
+                            <div class="online__item-server-name">PUBLIC:</div><span
+                                id="mod_PUBLIC">0</span>
+                        </div>
+                                        <hr>
+                    <div class="online__item">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#three-users"></use>
+                        </svg> На сайте: <span
+                            id="site_olnine">2</span>
+                    </div>
+                </div>
+            </div>
+                        <div class="header_burger">
+            <span></span>
+        </div>
+        <div class="nav_header_menu no_scroll">
+            <ul class="header_list">
+                                                                                        <li>
+                                <a href="https://neo3.edragon.ru/" >Главная</a>
+                            </li>
+                                                                                                                                    <li>
+                                <a href="leaderboard.html" >Лидеры</a>
+                            </li>
+                                                                                                                                    <li>
+                                <a href="https://neo3.edragon.ru/checker" >Checker</a>
+                            </li>
+                                                                                                                                    <li>
+                                <a href="https://neo3.edragon.ru/punishment" >Наказания</a>
+                            </li>
+                                                                                                                                    <li>
+                                <a href="https://neo3.edragon.ru/faq" >FAQ</a>
+                            </li>
+                                                                                                                                                                                                                                            <li>
+                                        <a href="https://neo3.edragon.ru/skinchanger" >Скинченджер</a>
+                                    </li>
+                                                                                                                                <li>
+                                        <a href="https://neo3.edragon.ru/tickets" >Тикеты</a>
+                                    </li>
+                                                                                                                                <li>
+                                        <a href="https://neo3.edragon.ru/steamfinder" >Поиск игрока</a>
+                                    </li>
+                                                                                                                                <li>
+                                        <a href="https://neo3.edragon.ru/store" >Магазин</a>
+                                    </li>
+                                                                                                                                <li>
+                                        <a href="https://neo3.edragon.ru/help" >Правила</a>
+                                    </li>
+                                                                                                                                                                                                                                    </ul>
+        </div>
+    </div>
+    <div class="navbar_usermenu">
+                            <div class="search_players" id="open_search">
+                <div class="modal-searchcontent">
+                    <form enctype="multipart/form-data" method="post">
+                        <input class="search-input-block" type="text"
+                            placeholder="Найти игрока" name="_steam_id">
+                        <input type="hidden" name="btn_search">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#magnifying-glass"></use>
+                        </svg>
+                    </form>
+                </div>
+                <div class="modal_users_container">
+                    <div class="modal_blocks_content no-scrollbar">
+                        <div class="modal_users_header" id="search_header"></div>
+                    </div>
+                </div>
+            </div>
+                            <button class="pay_button" data-openmodal="popupPay">
+                <svg>
+                    <use href="/resources/img/sprite.svg#wallet"></use>
+                </svg>
+                <span class="hide_balance_text">
+                    Пополнить                </span>
+            </button>
+                                            <button class="language button-icon" id="openLanguage">
+                <svg>
+                    <use href="/resources/img/sprite.svg#lang"></use>
+                </svg>
+            </button>
+            <div class="language__modal">
+                <div class="language__modal-current">
+                    <span class="language__modal-title">Выбранный язык</span>
+                    <div class="language__modal-current-lang">
+                        <img src="storage/cache/img/icons/custom/flags/ru.svg" class=svg>                        Русский                    </div>
+                </div>
+                <hr>
+                <div class="language__modal-list">
+                    <span class="language__modal-title">Выберите нужный</span>
+                                                                                                                    <button class="language__modal-item width-100"
+                                onclick="location.href = '?language=EN'">
+                                <img src="storage/cache/img/icons/custom/flags/en.svg" class=svg>                                Английский                            </button>
+                                                                                                <button class="language__modal-item width-100"
+                                onclick="location.href = '?language=UA'">
+                                <img src="storage/cache/img/icons/custom/flags/ua.svg" class=svg>                                Украинский                            </button>
+                                                            </div>
+            </div>
+                            <button onclick="location.href='?auth=login'">
+                <svg>
+                    <use href="/resources/img/sprite.svg#steam"></use>
+                </svg>
+                Войти            </button>
+                    </div>
+</div>
+<div class="popup_modal" id="popupPay">
+    <div class="popup_modal_content no-close no-scrollbar">
+        <div class="popup_modal_head">
+            Пополнение баланса                        <span class="popup_modal_close"><svg><use href="/resources/img/sprite.svg#x"></use></svg></span>
+        </div>
+        <form id="pay" data-default="true" enctype="multipart/form-data" method="post" class="lk_window">
+            <div class="popup_balance_content">
+                                    <div class="popub_balance_first">
+                        <div class="popup_column">
+                            <div class="inputs-inline">
+                                <label><svg><use href="/resources/img/sprite.svg#card"></use></svg>Выберите способ оплаты</label>
+                                <div class="popup_pay_area">
+                                                                            <input type="radio" name="gatewayPay" data-name="YooMoney" value="yoomoney" id="Gateway5" class="popup_gateways">
+                                        <label for="Gateway5" class="popup_gateways-label"><img src="app/modules/module_page_pay/assets/gateways/yoomoney.svg" alt=""></label>
+                                                                            <input type="radio" name="gatewayPay" data-name="PayPalych" value="paypalych" id="Gateway9" class="popup_gateways">
+                                        <label for="Gateway9" class="popup_gateways-label"><img src="app/modules/module_page_pay/assets/gateways/paypalych.svg" alt=""></label>
+                                                                            <input type="radio" name="gatewayPay" data-name="Lava" value="lava" id="Gateway10" class="popup_gateways">
+                                        <label for="Gateway10" class="popup_gateways-label"><img src="app/modules/module_page_pay/assets/gateways/lava.svg" alt=""></label>
+                                                                            <input type="radio" name="gatewayPay" data-name="CentApp" value="centapp" id="Gateway11" class="popup_gateways">
+                                        <label for="Gateway11" class="popup_gateways-label"><img src="app/modules/module_page_pay/assets/gateways/centapp.svg" alt=""></label>
+                                                                    </div>
+                            </div>
+                                                            <div class="inputs-inline">
+                                    <label for="userSteamidPay"><svg><use href="/resources/img/sprite.svg#steam"></use></svg>STEAM ID:</label>
+                                    <input id="userSteamidPay" name="steam" placeholder="STEAM_1:1:390... / 7656119803... / [U:1:1234234] / https://steamcommunity.com/profiles/... ">
+                                </div>
+                                                    </div>
+                    </div>
+                    <div class="popup_middle_line">
+                        <span class="popup_line_top"></span>
+                        <span class="popup_arrow"></span>
+                        <span class="popup_line_bottom"></span>
+                    </div>
+                                <div class="popub_balance_second">
+                    <div class="popup_balance_second_flex">
+                        <label><svg><use href="/resources/img/sprite.svg#gateaway"></use></svg>Способ оплаты</label>
+                        <div class="popup_pay_info">
+                            <div class="popup_pay_info_left">
+                                <span class="popup_title_text">Способ оплаты</span>
+                                <span class="popup_pay_method" id="kass_name">Не выбран</span>
+                            </div>
+                            <div id="kass_img"></div>
+                        </div>
+                        <div class="skintoggle" id="skinnone">
+                            <label><svg><use href="/resources/img/sprite.svg#gateaway"></use></svg>Выберите желаемую сумму</label>
+                            <div class="preset_buttons">
+                                <button class="flex-auto preset-amount" type="button" data-amount="100">100</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="250">250</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="500">500</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="1000">1000</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="2000">2000</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="2500">2500</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="3000">3000</button>
+                                <button class="flex-auto preset-amount" type="button" data-amount="5000">5000</button>
+                                <button id="clearButton" class="button-delete delete-amount" type="button"><svg><use href="/resources/img/sprite.svg#broom"></use></svg></button>
+                            </div>
+                            <div class="inputs-inline">
+                                <label for="numberInput"><svg><use href="/resources/img/sprite.svg#coins"></use></svg>Сумма пополнения:</label>
+                                <div class="number">
+                                    <button class="number-minus" type="button" onclick="decrementValue(this);">-</button>
+                                    <input id="numberInput" type="number" min="25" max="20000" value="50" name="amount" placeholder="Введите сумму" onchange="updateValue(this);">
+                                    <button class="number-plus" type="button" onclick="incrementValue(this);">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup_promo_block">
+                            <div class="inputs-inline">
+                                <label for="promoCodeInput"><svg><use href="/resources/img/sprite.svg#ticket"></use></svg>Промокод</label>
+                                <div class="popup_promo_area">
+                                    <input id="promoCodeInput" name="promocode" placeholder="Вставьте промокод">
+                                    <div class="popup_clear_promo" id="popupClearPromo"><svg><use href="/resources/img/sprite.svg#broom"></use></svg></div>
+                                </div>
+                            </div>
+                            <div class="inputs-inline">
+                                <label>Доступные</label>
+                                <div class="popup_promo_list">
+                                                                            <div class="popup_current_promo popup_copybtn" data-promocode="EDRAGON">
+                                            EDRAGON<svg><use href="/resources/img/sprite.svg#copy"></use></svg>
+                                        </div>
+                                                                    </div>
+                            </div>
+                        </div>
+                        <div class="inputs-inline" id="promoresult"></div>
+                        <hr>
+                        <div class="inputs-inline">
+                            <input type="checkbox" id="checkbox">
+                            <label for="checkbox">
+                                Соглашаюсь с <a href="https://neo3.edragon.ru/oferta">договором оферты</a>
+                            </label>
+                        </div>
+                        <button id="paybutton" class="button-pay width-100" form="pay" type="submit" disabled>Пополнить</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="display: none;" id="resultForm"></div>
+    </div>
+</div>    <script src="app/modules/module_block_main_online_stats/assets/js/1_always.js%3F1784269331"></script><div class="row">
+    <div class="col-md-3 fix-width-tablet">
+        <div class="card sticky-filter">
+            <div class="card-header">
+                <h5 class="badge">Информация</h5>
+            </div>
+            <div class="card-container">
+                <div id="userStatsContainer"></div>
+                <div class="inputs-inline">
+                    <label for="">Выберите сервер</label>
+                    <div class="adaptive-select-wrapper">
+                        <ul class="adaptive-select__dropdown-list" id="option-server-select">
+                                                                                                <li>
+                                        <label class="adaptive-select__label" for="for_0">
+                                            <div class="adaptive-select__label-text">PUBLIC</div>
+                                            <input class="hide-input" id="for_0" type="radio" name="server" value="0" checked>
+                                        </label>
+                                    </li>
+                                                                    <li>
+                                        <label class="adaptive-select__label" for="for_1">
+                                            <div class="adaptive-select__label-text">AWP</div>
+                                            <input class="hide-input" id="for_1" type="radio" name="server" value="1" >
+                                        </label>
+                                    </li>
+                                                                    <li>
+                                        <label class="adaptive-select__label" for="for_2">
+                                            <div class="adaptive-select__label-text">MIRAGE</div>
+                                            <input class="hide-input" id="for_2" type="radio" name="server" value="2" >
+                                        </label>
+                                    </li>
+                                                                    <li>
+                                        <label class="adaptive-select__label" for="for_3">
+                                            <div class="adaptive-select__label-text">MIRAGE</div>
+                                            <input class="hide-input" id="for_3" type="radio" name="server" value="3" >
+                                        </label>
+                                    </li>
+                                                                    <li>
+                                        <label class="adaptive-select__label" for="for_4">
+                                            <div class="adaptive-select__label-text">MIRAGE</div>
+                                            <input class="hide-input" id="for_4" type="radio" name="server" value="4" >
+                                        </label>
+                                    </li>
+                                                                                    </ul>
+                        <div class="adaptive-select" open-select="option-server-select">
+                            <span class="adaptive-select__span_text"></span>
+                            <span class="margin-left-auto adaptive-select__arrow">
+                                <svg>
+                                    <use href="/resources/img/sprite.svg#chevron-down"></use>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <fieldset class="leaderboard__fieldset">
+                    <legend>Отсортировать по:</legend>
+                    <div class="leaderboard__form">
+                        <div class="inputs-inline">
+                            <label for="value" class="leaderboard__form-label"><input id="value" type="radio" name="filter" value="0" checked>
+                                Игровым очкам                            </label>
+                        </div>
+                        <div class="inputs-inline">
+                            <label for="kills" class="leaderboard__form-label"><input id="kills" type="radio" name="filter" value="1">
+                                Количеству убийств                            </label>
+                        </div>
+                        <div class="inputs-inline">
+                            <label for="deaths" class="leaderboard__form-label"><input id="deaths" type="radio" name="filter" value="2">
+                                Количеству смертей                            </label>
+                        </div>
+                        <div class="inputs-inline">
+                            <label for="kd" class="leaderboard__form-label"><input id="kd" type="radio" name="filter" value="3">K/D</label>
+                        </div>
+                        <div class="inputs-inline">
+                            <label for="headshots" class="leaderboard__form-label"><input id="headshots" type="radio" name="filter" value="4">
+                                Убийствам в голову                            </label>
+                        </div>
+                        <div class="inputs-inline">
+                            <label for="playtime" class="leaderboard__form-label"><input id="playtime" type="radio" name="filter" value="5">
+                                Наигранному времени                            </label>
+                        </div>
+                        <div class="inputs-inline">
+                            <label for="lastconnect" class="leaderboard__form-label"><input id="lastconnect" type="radio" name="filter" value="6">
+                                Последней сессии                            </label>
+                        </div>
+                        <button class="button-delete width-100" id="resetFilter">
+                            Сбросить фильтр                        </button>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Другое</legend>
+                    <div class="inputs-inline">
+                        <input type="checkbox" id="clear_banned" class="switch" name="clear_banned">
+                        <label for="clear_banned">Скрыть забаненных</label>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 fix-width-tablet">
+        <div class="table-responsive" id="contentTable">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><svg><use href="/resources/img/sprite.svg#faceit-logo"></use></svg></th>
+                        <th style="width: 242px">Игрок</th>
+                        <th style="width: 112px">Звание</th>
+                                                <th>Убийства</th>
+                        <th>Смерти</th>
+                        <th>К/Д</th>
+                        <th>В голову</th>
+                        <th>Наиграл</th>
+                        <th>Последняя игра</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardTableBody">
+                </tbody>
+            </table>
+        </div>
+        <div id="contentPagination"></div>
+    </div>
+</div></div>
+    <div class="popup_modal" id="popupContacts">
+        <div class="popup_modal_content no-close no-scrollbar">
+            <div class="popup_modal_head">
+                Контактная информация                <span class="popup_modal_close">
+                    <svg>
+                        <use href="/resources/img/sprite.svg#x"></use>
+                    </svg>
+                </span>
+            </div>
+            <div class="contact_body">
+                <span>По вопросам сотрудничества:                    <img src="resources/img/contact/mail.png" alt="">
+                    <br>
+                                            <a class="contact_mail" href="mailto:sdsds&body=Приветствую?subject=У меня есть вопрос">
+                            sdsds                        </a>
+                                    </span>
+                            </div>
+        </div>
+    </div>
+<footer class="footer_fluid">
+    <div class="tabbar_mobile">
+        <a href="https://neo3.edragon.ru/" class="">
+            <svg>
+                <use href="/resources/img/sprite.svg#gamepad"></use>
+            </svg>
+            Сервера        </a>
+        <a href="https://neo3.edragon.ru/store" class="">
+            <svg>
+                <use href="/resources/img/sprite.svg#store-build"></use>
+            </svg>
+            Магазин        </a>
+                    <a data-openmodal="popupPay">
+                <svg>
+                    <use href="/resources/img/sprite.svg#wallet"></use>
+                </svg>
+                Баланс            </a>
+            </div>
+    <div class="footer_global">
+        <div class="footer-top">
+            <div class="left_footer">
+                <a href="https://neo3.edragon.ru/">
+                    <div class="footer_sitename">
+                        CS PROJECT NAME                    </div>
+                </a>
+            </div>
+            <div class="footer_links">
+                <ul>
+                                                                        <li class="">
+                                <a href="https://neo3.edragon.ru/checker" >
+                                    Лидеры                                </a>
+                            </li>
+                                                                                                                                            <li class="">
+                                <a href="https://neo3.edragon.ru/tickets" target="_blank">
+                                    Тикеты                                </a>
+                            </li>
+                                                                                                            <li class="contact_link" data-openmodal="popupContacts">
+                            <a>Контакты</a>
+                        </li>
+                                    </ul>
+            </div>
+            <div class="social_buttons">
+                                    <a class="social_button" href="https://vk.com/example1" target="_blank">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#vk"></use>
+                        </svg>
+                    </a>
+                                                    <a class="social_button" href="https://t.me/example" target="_blank">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#tg"></use>
+                        </svg>
+                    </a>
+                                                    <a class="social_button" href="https://steamcommunity.com/groups/example" target="_blank">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#steam"></use>
+                        </svg>
+                    </a>
+                                                    <a class="social_button" href="https://dsc.gg/example" target="_blank">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#ds"></use>
+                        </svg>
+                    </a>
+                                                    <a class="social_button" href="https://www.youtube.com/@example" target="_blank">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#yt"></use>
+                        </svg>
+                    </a>
+                                                    <a class="social_button" href="https://www.tiktok.com/@example" target="_blank">
+                        <svg>
+                            <use href="/resources/img/sprite.svg#tt"></use>
+                        </svg>
+                    </a>
+                            </div>
+        </div>
+        <hr>
+        <div class="footer-bottom">
+            <p class="footer-description">Проект серверов по игре КС2 (Counter-Strike 2) с адекватным комьюнити и лучшими админами! Проект серверов по игре КС2 (Counter-Strike 2) с адекватным комьюнити и лучшими админами! Проект серверов по игре КС2 (Counter-Strike 2) с адекватным комьюнити и лучшими админами! Проект серверов по игре КС2 (Counter-Strike 2) с адекватным комьюнити и лучшими админами!</p>
+        </div>
+                    </div>
+
+    <dialog id="modal" aria-labelledby="dialog-header" aria-describedby="dialog-content">
+        <h1 id="dialog-header">Подтверждение действия</h1>
+        <div id="dialog-content" class="dialog-content">
+            Удалить?
+        </div>
+        <div class="dialog-buttons">
+            <button class="width-100" id="confirm-btn">Да</button>
+            <button class="width-100" id="cancel-btn">Нет</button>
+        </div>
+    </dialog>
+
+</footer>
+</div>
+<script src="storage/assets/js/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="storage/assets/js/vendors/jquery/jquery-ui.min.js"></script>
+
+<script src="app/templates/neo_remastered/assets/js/popper.min.js"></script>
+<script src="app/templates/neo_remastered/assets/js/iziToast.min.js"></script>
+<script src="app/templates/neo_remastered/assets/js/clipboard.min.js"></script>
+<script src="app/templates/neo_remastered/assets/js/search.js" defer></script>
+<script src="app/templates/neo_remastered/assets/js/stars.js%3F1784269331" defer></script>
+<script src="storage/assets/js/jscolor.min.js"></script>
+    <script
+        src="storage/assets/js/app.js%3F1784269331"></script>
+    <script
+        src="app/templates/neo_remastered/assets/js/app.js%3F1784269331"></script>
+                        <script src="app/modules/module_page_pay/assets/js/always.js%3F1784269331"></script>
+                                <script src="app/modules/module_page_cards/assets/js/always.js%3F1784269331"></script>
+                                <script src="app/modules/module_page_bonuses/assets/js/always.js%3F1784269331"></script>
+                    <script src="app/modules/module_page_leaderboard/assets/js/1.js%3F1784269331"></script>
+</body>
+
+</html>
